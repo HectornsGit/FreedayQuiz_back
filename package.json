@@ -5,7 +5,8 @@
   "description": "API to make quiz games online developed in NodeJS",
   "main": "index.js",
   "scripts": {
-    "dev": "node --watch ./src/server.js"
+    "dev": "node --watch ./src/server.js",
+    "initDb": "node ./src/db/initDb.js"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +14,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "mysql2": "^3.9.7"
   }
 }

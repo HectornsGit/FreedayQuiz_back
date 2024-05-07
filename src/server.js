@@ -3,6 +3,7 @@ import express from 'express';
 import 'dotenv/config';
 import cors from 'cors';
 import { join } from 'path';
+import userRoutes from './userRoutes.js';
 
 //Express:
 const app = express();
@@ -15,6 +16,9 @@ app.use(cors());
 const __dirname = process.cwd();
 const ruta = join(__dirname, 'src', 'uploads');
 app.use('/uploads', express.static(ruta));
+
+// Rutas de usuario
+app.use('/api/users', userRoutes);
 
 //Server:
 app.listen(process.env.PORT, () => {

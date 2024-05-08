@@ -1,5 +1,6 @@
 import express from "express";
-import pool from "./getPool.js";
+import pool from "./db/getPool.js";
+import useDb from "./db/useDb.js";
 
 const router = express.Router();
 
@@ -8,6 +9,9 @@ router.post("/register", async (req, res) => {
     const { name, email, password } = req.body;
 
     try {
+        // Seleccionar la base de datos
+        await useDb();
+
         // Verificar si el correo electrónico ya está en uso
         const [existingUser] = await pool.query(
             "SELECT * FROM users WHERE email = ?",

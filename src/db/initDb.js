@@ -7,6 +7,8 @@ const createDb = async () => {
 
       await useDb();
 
+      await pool.query("SET FOREIGN_KEY_CHECKS = 0;");
+
       await pool.query(`DROP TABLE IF EXISTS users;`);
 
       await pool.query(`
@@ -47,6 +49,8 @@ const createDb = async () => {
                 modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP,
                 FOREIGN KEY (quiz_id) REFERENCES quizzes(id)
             );`);
+
+      await pool.query("SET FOREIGN_KEY_CHECKS = 1;");
 
       console.log("Tablas de base de datos creada exitosamente");
   } catch (error) {

@@ -81,4 +81,20 @@ router.post("/login", async (req, res) => {
     }
 });
 
+// Endpoint para listar todos los usuarios
+router.get("/profile", async (req, res) => {
+    try {
+        // Seleccionar la base de datos
+        await useDb();
+
+        // Consultar todos los usuarios
+        const [users] = await pool.query("SELECT id, name, email, avatar FROM users");
+
+        res.status(200).json(users);
+    } catch (error) {
+        console.error("Error al obtener la lista de usuarios:", error);
+        res.status(500).json({ message: "Error interno del servidor" });
+    }
+});
+
 export default router;

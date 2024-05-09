@@ -7,6 +7,13 @@ import { checkEmail, createUser } from '../../models/users/index.js';
 const register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
+
+    let avatar = req.file.filename;
+    if (!avatar) {
+      avatar = 'imagenPredeterminada.png';
+    }
+
+    //Validación con Joi:
     const validationObject = {
       name,
       email,
@@ -29,11 +36,11 @@ const register = async (req, res, next) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const insertId = await createUser(name, email, hashedPassword);
+    const insertId = await createUser(name, email, hashedPassword, avatar);
 
     res.status(201).send({
       message: 'Registro completado con éxito',
-      data: { id: insertId, name, email, password },
+      data: { id: insertId, name: name, email: email, avatar: avatar },
     });
   } catch (error) {
     next(error);

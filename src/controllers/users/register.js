@@ -1,9 +1,9 @@
-import checkEmail from '../../models/users/checkEmail';
 import bcrypt from 'bcrypt';
 import Joi from 'joi';
 import generateError from '../../utils/index.js';
-import { validationSchemaRegister } from '../../utils/validation.js';
-import checkEmail from '../../models/users/checkEmail';
+import { validationSchemaRegister } from '../../utils/index.js';
+import { checkEmail, createUser } from '../../models/users/index.js';
+
 const register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;

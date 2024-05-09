@@ -1,2 +1,4 @@
 import generateError from './generateError';
-export { generateError };
+import { validationSchemaRegister } from './joiValidation';
+
+export { generateError, validationSchemaRegister };

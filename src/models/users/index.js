@@ -1,2 +1,3 @@
 import checkEmail from './checkEmail';
-export { checkEmail };
+import createUser from './createUser';
+export { checkEmail, createUser };

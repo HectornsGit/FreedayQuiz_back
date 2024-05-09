@@ -3,7 +3,7 @@ import express from 'express';
 import 'dotenv/config';
 import cors from 'cors';
 import { join } from 'path';
-import userRoutes from './routes/index.js';
+import { userRoutes } from './routes/index.js';
 
 //Express:
 const app = express();

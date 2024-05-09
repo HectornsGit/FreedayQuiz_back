@@ -1,2 +1,3 @@
-import register from './register';
-export { register };
+import register from './register.js';
+import login from './login.js';
+export { register, login };

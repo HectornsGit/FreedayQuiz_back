@@ -1,4 +1,7 @@
-import generateError from './generateError';
-import { validationSchemaRegister } from './joiValidation';
+import generateError from './generateError.js';
+import {
+  validationSchemaRegister,
+  validationSchemaLogin,
+} from './joiValidation.js';
 
-export { generateError, validationSchemaRegister };
+export { generateError, validationSchemaRegister, validationSchemaLogin };

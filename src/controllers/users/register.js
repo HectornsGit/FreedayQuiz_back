@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import Joi from 'joi';
-import generateError from '../../utils/index.js';
+import { generateError } from '../../utils/index.js';
 import { validationSchemaRegister } from '../../utils/index.js';
 import { checkEmail, createUser } from '../../models/users/index.js';
 

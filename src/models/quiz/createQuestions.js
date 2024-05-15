@@ -7,15 +7,15 @@ const createQuestions = async (quizData) => {
     optionA,
     optionB,
     optionC,
-    optionD,
+    correctAnswer,
     question_number,
   } = quizData;
 
   await useDb();
 
   await pool.query(
-    'INSERT INTO questions ( quiz_id, title, optionA, optionB,optionC, optionD, question_number )VALUES(?,?,?,?,?,?,?)',
-    [quiz_id, title, optionA, optionB, optionC, optionD, question_number]
+    'INSERT INTO questions ( quiz_id, title, optionA, optionB,optionC, correctAnswer, question_number )VALUES(?,?,?,?,?,?,?)',
+    [quiz_id, title, optionA, optionB, optionC, correctAnswer, question_number]
   );
 };
 export default createQuestions;

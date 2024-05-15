@@ -8,7 +8,7 @@ const register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
 
-    let avatar = req.file.filename;
+    let avatar = req.file?.filename;
     if (!avatar) {
       avatar = 'imagenPredeterminada.png';
     }

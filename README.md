@@ -12,8 +12,10 @@ node --run dropDb para borrar la base de datos y las tablas
 
 # # Endpoints:
 
-/register para registrar un usuario.
+post /register para registrar un usuario.
 
-/login para acceder al sistema.
+post /login para acceder al sistema.
 
-/create-quiz para crear un quiz
+post /create-quiz para crear un quiz
+
+post /create-questions para crear preguntas y añadirlas a un quiz

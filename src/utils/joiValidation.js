@@ -19,7 +19,7 @@ const validationSchemaQuestions = {
   optionA: Joi.string().max(60).required(),
   optionB: Joi.string().max(60).required(),
   optionC: Joi.string().max(60).required(),
-  optionD: Joi.string().max(60).required(),
+  correctAnswer: Joi.string().max(60).required(),
   question_number: Joi.number().required(),
 };
 //Exporto las variables:

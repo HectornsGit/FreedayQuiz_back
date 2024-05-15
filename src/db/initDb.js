@@ -43,7 +43,7 @@ const createDb = async () => {
                 optionA VARCHAR(60) NOT NULL,
                 optionB VARCHAR(60),
                 optionC VARCHAR(60),
-                optionD VARCHAR(60),
+                correctAnswer VARCHAR(60),
                 question_number INT NOT NULL,
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP,

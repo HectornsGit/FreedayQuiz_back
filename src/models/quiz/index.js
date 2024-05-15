@@ -1,2 +1,4 @@
 import createQuiz from './createQuiz.js';
-export { createQuiz };
+import createQuestions from './createQuestions.js';
+import checkQuestionNumber from './checkQuestionNumber.js';
+export { createQuiz, createQuestions, checkQuestionNumber };

@@ -1,2 +1,3 @@
 import createQuizController from './createQuizController.js';
-export { createQuizController };
+import createQuestionsController from './createQuestionsController.js';
+export { createQuizController, createQuestionsController };

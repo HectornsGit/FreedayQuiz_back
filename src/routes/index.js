@@ -1,2 +1,3 @@
 import userRoutes from './userRoutes.js';
-export { userRoutes };
+import quizRoutes from './quizRoutes.js';
+export { userRoutes, quizRoutes };

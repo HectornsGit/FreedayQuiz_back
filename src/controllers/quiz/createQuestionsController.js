@@ -1,4 +1,3 @@
-import Joi from 'joi';
 import { generateError } from '../../utils/index.js';
 import {
   checkQuestionNumber,
@@ -17,7 +16,7 @@ const createQuizController = async (req, res, next) => {
       generateError('Ya existe una pregunta con ese número en este quiz', 400);
     }
     //Validación con Joi:
-    const { error } = Joi.object(validationSchemaQuestions).validate(req.body);
+    const { error } = validationSchemaQuestions.validate(req.body);
     if (error) {
       error.message = error.details[0].message;
       throw error;

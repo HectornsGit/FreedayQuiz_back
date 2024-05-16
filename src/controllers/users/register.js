@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt';
-import Joi from 'joi';
 import { generateError } from '../../utils/index.js';
 import { validationSchemaRegister } from '../../utils/index.js';
 import { checkEmail, createUser } from '../../models/users/index.js';
@@ -19,9 +18,7 @@ const register = async (req, res, next) => {
       email,
       password,
     };
-    const { error } = Joi.object(validationSchemaRegister).validate(
-      validationObject
-    );
+    const { error } = validationSchemaRegister.validate(validationObject);
 
     if (error) {
       error.message = error.details[0].message;

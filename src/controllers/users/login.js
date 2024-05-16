@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt';
-import Joi from 'joi';
 import jwt from 'jsonwebtoken';
 import { checkEmail } from '../../models/users/index.js';
 import { generateError } from '../../utils/index.js';
@@ -14,9 +13,7 @@ const login = async (req, res, next) => {
       password,
     };
 
-    const { error } = Joi.object(validationSchemaLogin).validate(
-      validationObject
-    );
+    const { error } = validationSchemaLogin.validate(validationObject);
 
     if (error) {
       error.message = error.details[0].message;

@@ -5,8 +5,6 @@ const createQuizController = async (req, res, next) => {
   try {
     const { title, description } = req.body;
     const loggedUserId = req.auth?.id;
-    console.log('Consolelog', loggedUserId);
-    console.log('Consolelog2', req.auth);
 
     //Validación con Joi:
     const { error } = validationSchemaQuiz.validate(req.body);

@@ -3,7 +3,7 @@ import useDb from '../../db/useDb.js';
 const createQuestions = async (quizData) => {
   const {
     quiz_id,
-    title,
+    question,
     optionA,
     optionB,
     optionC,
@@ -14,8 +14,16 @@ const createQuestions = async (quizData) => {
   await useDb();
 
   await pool.query(
-    'INSERT INTO questions ( quiz_id, title, optionA, optionB,optionC, correctAnswer, question_number )VALUES(?,?,?,?,?,?,?)',
-    [quiz_id, title, optionA, optionB, optionC, correctAnswer, question_number]
+    'INSERT INTO questions ( quiz_id, question, optionA, optionB,optionC, correctAnswer, question_number )VALUES(?,?,?,?,?,?,?)',
+    [
+      quiz_id,
+      question,
+      optionA,
+      optionB,
+      optionC,
+      correctAnswer,
+      question_number,
+    ]
   );
 };
 export default createQuestions;

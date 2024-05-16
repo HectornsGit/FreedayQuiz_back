@@ -1,6 +1,11 @@
 import express from 'express';
 import multer from 'multer';
-import { register, login } from '../controllers/users/index.js';
+import {
+  register,
+  login,
+  getUserByIdController,
+} from '../controllers/users/index.js';
+import { validateAuth } from '../middlewares/index.js';
 import { storage, limits, fileFilter } from '../utils/index.js';
 
 const router = express.Router();
@@ -12,5 +17,8 @@ router.post('/register', upload.single('avatar'), register);
 
 // Endpoint para iniciar sesión
 router.post('/login', login);
+
+//Endpoint para obtener la información del usuario registrado:
+router.get('/user-info', validateAuth, getUserByIdController);
 
 export default router;

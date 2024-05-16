@@ -29,8 +29,10 @@ const createDb = async () => {
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 title VARCHAR(40) NOT NULL,
                 description TEXT,
+                owner_id INT NOT NULL,
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-                modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP
+                modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP,
+                FOREIGN KEY (owner_id) REFERENCES users(id)
             );`);
 
     await pool.query(`DROP TABLE IF EXISTS questions;`);

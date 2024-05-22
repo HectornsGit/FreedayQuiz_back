@@ -21,7 +21,7 @@ app.use('/uploads', express.static(ruta));
 // Rutas de usuario
 app.use(userRoutes);
 
-//Ruta para crear quiz:
+//Ruta para quizzes:
 app.use(quizRoutes);
 
 //Middlewares finales:

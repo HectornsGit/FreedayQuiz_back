@@ -1,2 +1,5 @@
 import validateAuth from './validateAuth.js';
-export { validateAuth };
+import notFoundRoute from './notFoundRoute.js';
+import manageErrors from './manageErrors.js';
+
+export { validateAuth, notFoundRoute, manageErrors };

@@ -4,6 +4,7 @@ import 'dotenv/config';
 import cors from 'cors';
 import { join } from 'path';
 import { userRoutes, quizRoutes } from './routes/index.js';
+import { notFoundRoute, manageErrors } from './middlewares/index.js';
 
 //Express:
 const app = express();
@@ -20,8 +21,12 @@ app.use('/uploads', express.static(ruta));
 // Rutas de usuario
 app.use(userRoutes);
 
-//Ruta para crear quiz:
+//Ruta para quizzes:
 app.use(quizRoutes);
+
+//Middlewares finales:
+app.use(notFoundRoute);
+app.use(manageErrors);
 
 //Server:
 app.listen(process.env.PORT, () => {

@@ -21,13 +21,17 @@ const createQuizController = async (req, res, next) => {
       error.message = error.details[0].message;
       throw error;
     }
-
-    await createQuestions(req.body);
+    let image = req.file?.filename;
+    if (!image) {
+      image = 'imagenPredeterminadaQuestions.png';
+    }
+    const quizData = { ...req.body, image };
+    await createQuestions(quizData);
 
     res.send({
       status: 'ok',
-      message: 'Has creado un quiz!👌',
-      data: req.body,
+      message: 'Has creado las preguntas para tu quiz!👌',
+      quizData,
     });
   } catch (error) {
     next(error);

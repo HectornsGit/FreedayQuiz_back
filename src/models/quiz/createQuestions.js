@@ -9,12 +9,13 @@ const createQuestions = async (quizData) => {
     optionC,
     correctAnswer,
     question_number,
+    image,
   } = quizData;
 
   await useDb();
 
   await pool.query(
-    'INSERT INTO questions ( quiz_id, question, optionA, optionB,optionC, correctAnswer, question_number )VALUES(?,?,?,?,?,?,?)',
+    'INSERT INTO questions ( quiz_id, question, optionA, optionB,optionC, correctAnswer, question_number, image )VALUES(?,?,?,?,?,?,?,?)',
     [
       quiz_id,
       question,
@@ -23,6 +24,7 @@ const createQuestions = async (quizData) => {
       optionC,
       correctAnswer,
       question_number,
+      image,
     ]
   );
 };

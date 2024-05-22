@@ -47,6 +47,7 @@ const createDb = async () => {
                 optionC VARCHAR(60),
                 correctAnswer VARCHAR(60),
                 question_number INT NOT NULL,
+                image VARCHAR(255),
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP,
                 FOREIGN KEY (quiz_id) REFERENCES quizzes(id)

@@ -42,6 +42,7 @@ const createDb = async () => {
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 quiz_id INT NOT NULL,
                 question VARCHAR(60) NOT NULL,
+                question_time INT NOT NULL,
                 optionA VARCHAR(60) NOT NULL,
                 optionB VARCHAR(60),
                 optionC VARCHAR(60),

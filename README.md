@@ -12,7 +12,7 @@ node --run dropDb para borrar la base de datos y las tablas
 
 # # Endpoints:
 
-post /register para registrar un usuario. 
+post /register para registrar un usuario.
 
 Campos necesarios: name, email, password
 
@@ -27,12 +27,13 @@ Campos necesarios: title, description
 post /create-questions para crear preguntas y añadirlas a un quiz
 
 Campos necesarios:  
-    quiz_id, 
-    question,
-    optionA,
-    optionB,
-    optionC,
-    correctAnswer,
-    question_number,
+ quiz_id,
+question,
+time,
+optionA,
+optionB,
+optionC,
+correctAnswer,
+question_number,
 
 get /user-info para obtener información del usuario registrado y sus quizzes con sus respuestas.

@@ -17,6 +17,7 @@ const validationSchemaQuiz = Joi.object({
 const validationSchemaQuestions = Joi.object({
   quiz_id: Joi.number().integer().required(),
   question: Joi.string().max(60).required(),
+  question_time: Joi.string().max(60).required(),
   optionA: Joi.string().max(60).required(),
   optionB: Joi.string().max(60).required(),
   optionC: Joi.string().max(60).required(),

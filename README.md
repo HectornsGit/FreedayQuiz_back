@@ -47,3 +47,5 @@ avatar
 
 get /get-quiz/${id} para obtener un quiz por su id y ownerId.
 (Habrá que enviar el token del usuario logueado en la cabecera y el id del quiz en los parámetros de la ruta, tal y como se describe)
+
+patch /update-quiz/:id para editar un quiz, sus preguntas y respuestas.

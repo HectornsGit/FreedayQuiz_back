@@ -2,10 +2,10 @@ import multer from 'multer';
 import path from 'path';
 
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
+  destination: function (_req, _file, cb) {
     cb(null, './src/uploads/'); // Directorio donde se guardarán las fotos de perfil
   },
-  filename: function (req, file, cb) {
+  filename: function (_req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
   },
 });

@@ -6,6 +6,7 @@ const getUserById = async (id) => {
     `SELECT
       u.name,
       u.email,
+      u.password,
       u.avatar,
       u.createdAt,
       JSON_ARRAYAGG(

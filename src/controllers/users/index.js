@@ -1,4 +1,5 @@
 import register from './register.js';
 import login from './login.js';
 import getUserByIdController from './getUserByIdController.js';
-export { register, login, getUserByIdController };
+import editUserController from './editUserController.js';
+export { register, login, getUserByIdController, editUserController };

@@ -29,7 +29,7 @@ post /create-questions para crear preguntas y añadirlas a un quiz
 Campos necesarios:  
  quiz_id,
 question,
-time,
+question_time,
 optionA,
 optionB,
 optionC,
@@ -37,3 +37,10 @@ correctAnswer,
 question_number,
 
 get /user-info para obtener información del usuario registrado y sus quizzes con sus respuestas.
+
+patch /edit-user para editar datos del usuario (no quizzes)
+Todos los campos son opcionales:
+name,
+email,
+password,
+avatar

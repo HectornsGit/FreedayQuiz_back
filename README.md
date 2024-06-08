@@ -45,5 +45,22 @@ email,
 password,
 avatar
 
-get /get-quiz/${title} para obtener un quiz por su title y ownerId.
-(Habrá que enviar el token del usuario logueado en la cabecera y el title del quiz en los parámetros de la ruta, tal y como se describe)
+get /get-quiz/${id} para obtener un quiz por su id y ownerId.
+(Habrá que enviar el token del usuario logueado en la cabecera y el id del quiz en los parámetros de la ruta, tal y como se describe)
+
+patch /update-quiz/:id para editar un quiz, una pregunta y sus respuestas, seleccionándolo por su id.
+Todos los campos son opcionales, incluido el de la imagen.
+
+(quiz)
+title,
+description,
+
+(question)
+question,
+question_time,
+optionA,
+optionB,
+optionC,
+correctAnswer,
+question_number,
+image

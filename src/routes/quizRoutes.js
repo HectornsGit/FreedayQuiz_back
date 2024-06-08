@@ -6,6 +6,7 @@ import {
   createQuestionsController,
   getQuizController,
   updateQuizController,
+  updateQuestionController,
 } from '../controllers/quiz/index.js';
 import multer from 'multer';
 import { limits, fileFilter, storage } from '../utils/multerConfig.js';
@@ -26,10 +27,13 @@ routes.post(
 routes.get('/get-quiz/:id', validateAuth, getQuizController);
 export default routes;
 
-//Editar quiz:
+// Editar quiz:
+routes.patch('/update-quiz/:id', validateAuth, updateQuizController);
+
+// Editar question:
 routes.patch(
-  '/update-quiz/:id',
+  '/update-question/:quiz_id/:question_number',
   validateAuth,
   upload.single('image'),
-  updateQuizController
+  updateQuestionController
 );

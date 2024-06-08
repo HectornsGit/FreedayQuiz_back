@@ -4,7 +4,6 @@ import checkQuestionNumber from './checkQuestionNumber.js';
 import getQuiz from './getQuiz.js';
 import updateQuiz from './updateQuiz.js';
 import updateQuestions from './updateQuestions.js';
-import updateQuizAndQuestions from './updateQuizAndQuestions.js';
 export {
   createQuiz,
   createQuestions,
@@ -12,5 +11,4 @@ export {
   getQuiz,
   updateQuiz,
   updateQuestions,
-  updateQuizAndQuestions,
 };

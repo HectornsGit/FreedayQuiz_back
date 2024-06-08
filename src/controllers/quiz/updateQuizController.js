@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs/promises';
 import { getQuiz } from '../../models/quiz/index.js';
-import { updateQuizAndQuestions } from '../../models/quiz/index.js';
+
 import { validationSchemaQuiz } from '../../utils/index.js';
 import { validationSchemaQuestions } from '../../utils/index.js';
 

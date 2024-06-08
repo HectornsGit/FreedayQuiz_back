@@ -5,22 +5,23 @@ const getQuiz = async (loggedUserId, id) => {
   const [results] = await pool.query(
     `SELECT 
         q.id, 
-        q.title, 
+        q.title,
+        q.description, 
         q.owner_id, 
         JSON_ARRAYAGG(
             JSON_OBJECT(
                 'id', qu.id,
+                "quizId", qu.quiz_id,
                 'question', qu.question,
                 'questionNumber', qu.question_number,
                 'questionTime', qu.question_time,
                 'image', qu.image,
-                'responses', JSON_OBJECT(
-                    'optionA', qu.optionA,
-                    'optionB', qu.optionB,
-                    'optionC', qu.optionC,
-                    'correctAnswer', qu.correctAnswer
+                'optionA', qu.optionA,
+                'optionB', qu.optionB,
+                'optionC', qu.optionC,
+                'correctAnswer', qu.correctAnswer
                
-                )   
+                   
             )
         ) AS questions
     FROM quizzes q 
@@ -30,6 +31,6 @@ const getQuiz = async (loggedUserId, id) => {
     [loggedUserId, id]
   );
 
-  return results;
+  return results[0];
 };
 export default getQuiz;

@@ -22,7 +22,7 @@ Campos necesarios: email, password
 
 post /create-quiz para crear un quiz
 
-Campos necesarios: title, description
+Campos necesarios: title, description. En la respuesta del back se envía el código QR para unirse a la partida.
 
 post /create-questions para crear preguntas y añadirlas a un quiz
 

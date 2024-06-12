@@ -13,9 +13,18 @@ const createQuizController = async (req, res, next) => {
       error.message = error.details[0].message;
       throw error;
     }
-
+    //Generación de código de acceso aleatorio:
+    function generateCode() {
+      return Math.floor(1000 + Math.random() * 9000).toString();
+    }
+    const accessCode = generateCode();
     //----------------------------
-    const insertId = await createQuiz(title, description, loggedUserId);
+    const insertId = await createQuiz(
+      title,
+      description,
+      loggedUserId,
+      accessCode
+    );
 
     //Creación de código QR:
     const quizURL = await qr.toDataURL(
@@ -29,6 +38,7 @@ const createQuizController = async (req, res, next) => {
         id: insertId,
         title,
         description,
+        accessCode,
         ownerId: loggedUserId,
         qrCode: {
           quizId: insertId,

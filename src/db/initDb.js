@@ -30,6 +30,7 @@ const createDb = async () => {
                 title VARCHAR(40) NOT NULL,
                 description TEXT,
                 owner_id INT NOT NULL,
+                access_code VARCHAR(10) UNIQUE NOT NULL,
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP,
                 FOREIGN KEY (owner_id) REFERENCES users(id)

@@ -1,12 +1,13 @@
 import express from 'express';
 const routes = express.Router();
-import { validateAuth } from '../middlewares/index.js';
+import { validateAuth, joinQuizLimiter } from '../middlewares/index.js';
 import {
   createQuizController,
   createQuestionsController,
   getQuizController,
   updateQuizController,
   updateQuestionController,
+  getQuizIdByAccessCodeController,
 } from '../controllers/quiz/index.js';
 import multer from 'multer';
 import { limits, fileFilter, storage } from '../utils/multerConfig.js';
@@ -36,4 +37,11 @@ routes.patch(
   validateAuth,
   upload.single('image'),
   updateQuestionController
+);
+
+//Validar accessCode y traer quizId:
+routes.get(
+  '/join-quiz/:access_code',
+  joinQuizLimiter,
+  getQuizIdByAccessCodeController
 );

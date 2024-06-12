@@ -27,13 +27,13 @@ const updateQuestionController = async (req, res, next) => {
     if (req.file) {
       const oldImagePath = path.join('src', 'uploads', questionFromDb.image);
       const newImagePath = path.join('src', 'uploads', req.file.filename);
-      console.log('old', oldImagePath, 'new', newImagePath);
+
       try {
         // Si la imagen actual es diferente a la predeterminada, se elimina la anterior:
         if (
           newImagePath &&
           newImagePath !== oldImagePath &&
-          oldImagePath !== 'imagenPredeterminadaQuestions.png'
+          oldImagePath != 'imagenPredeterminadaQuestions.png'
         ) {
           await fs.unlink(oldImagePath);
         }

@@ -6,6 +6,7 @@ import {
   validationSchemaQuestions,
 } from './joiValidation.js';
 import { storage, limits, fileFilter } from './multerConfig.js';
+import generateCode from './generateCode.js';
 
 export {
   generateError,
@@ -16,4 +17,5 @@ export {
   storage,
   limits,
   fileFilter,
+  generateCode,
 };

@@ -13,12 +13,15 @@ const getUserById = async (id) => {
         JSON_OBJECT(
           'id', q.id,
           'title', q.title,
+          "description", q.description,
+          "accessCode", q.access_code,
           'questions', (
             SELECT JSON_ARRAYAGG(
               JSON_OBJECT(
                 'id', qu.id,
                 'question', qu.question,
                 'questionNumber', qu.question_number,
+                "question_time", qu.question_time,
                 'responses', JSON_OBJECT(
                   'optionA', qu.optionA,
                   'optionB', qu.optionB,

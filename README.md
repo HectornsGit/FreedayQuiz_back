@@ -63,3 +63,5 @@ optionB,
 optionC,
 correctAnswer,
 image
+
+get /join-quiz/:access_code para obtener el id del quiz a través del código de acceso.

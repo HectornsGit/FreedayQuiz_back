@@ -1,6 +1,7 @@
 import { createQuiz } from '../../models/quiz/index.js';
 import { validationSchemaQuiz } from '../../utils/index.js';
 import qr from 'qrcode';
+import { generateCode } from '../../utils/index.js';
 
 const createQuizController = async (req, res, next) => {
   try {
@@ -13,11 +14,10 @@ const createQuizController = async (req, res, next) => {
       error.message = error.details[0].message;
       throw error;
     }
+
     //Generación de código de acceso aleatorio:
-    function generateCode() {
-      return Math.floor(1000 + Math.random() * 9000).toString();
-    }
-    const accessCode = generateCode();
+    const accessCode = generateCode(4);
+
     //----------------------------
     const insertId = await createQuiz(
       title,

@@ -1,10 +1,10 @@
 import useDb from '../../db/useDb.js';
 import pool from '../../db/getPool.js';
 const GetQuizIdByAccessCode = async (accessCode) => {
-  useDb();
-  const quizId = pool.query(`SELECT id FROM quizzes WHERE access_code =?`, [
+  await useDb();
+  const [id] = await pool.query(`SELECT id FROM quizzes WHERE access_code =?`, [
     accessCode,
   ]);
-  return quizId;
+  return id[0].id;
 };
 export default GetQuizIdByAccessCode;

@@ -5,9 +5,9 @@
   "description": "API to make quiz games online developed in NodeJS",
   "main": "index.js",
   "scripts": {
-    "dev": "node --watch ./src/server.js",
-    "initDb": "node ./src/db/initDb.js",
-    "dropDb": "node ./src/db/dropDb.js"
+    "dev": "babel-node --watch ./src/server.js",
+    "initDb": "babel-node ./src/db/initDb.js",
+    "dropDb": "babel-node ./src/db/dropDb.js"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +23,12 @@
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.10.0",
     "qrcode": "^1.5.3",
+    "redis": "^4.6.14",
     "socket.io": "^4.7.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.7",
+    "@babel/node": "^7.24.7",
+    "@babel/preset-env": "^7.24.7"
   }
 }

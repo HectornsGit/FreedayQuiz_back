@@ -4,7 +4,7 @@ import 'dotenv/config';
 import cors from 'cors';
 import { createServer } from 'node:http';
 import { Server } from 'socket.io';
-import quizSockets from '../sockets/quizSockets.js';
+// import quizSockets from './sockets/quizSockets.js';
 import { join } from 'path';
 import { userRoutes, quizRoutes } from './routes/index.js';
 import { notFoundRoute, manageErrors } from './middlewares/index.js';
@@ -21,7 +21,7 @@ const io = new Server(server, {
     methods: ['GET', 'POST'],
   },
 });
-quizSockets(io);
+// quizSockets(io);
 
 //Middlewares de aplicación:
 app.use(express.json());

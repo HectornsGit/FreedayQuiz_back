@@ -20,6 +20,7 @@ const getUserById = async (id) => {
               JSON_OBJECT(
                 'id', qu.id,
                 'question', qu.question,
+                "image", qu.image,
                 'questionNumber', qu.question_number,
                 "question_time", qu.question_time,
                 'responses', JSON_OBJECT(

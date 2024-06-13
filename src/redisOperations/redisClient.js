@@ -1,6 +1,6 @@
-import redis from 'redis';
+import { createClient } from 'redis';
 
-const redisClient = redis.createClient();
+const redisClient = createClient();
 
 redisClient.on('error', (err) => {
   console.error('Redis error:', err);

@@ -1,6 +1,6 @@
 import { GetQuizIdByAccessCode } from '../../models/quiz/index.js';
 
-const getQuizIdByAccessCodeController = async (req, res) => {
+const getQuizIdByAccessCodeController = async (req, res, next) => {
   //Se trae el codigo de los parámetros:
   const accessCode = req.params.access_code;
 
@@ -8,11 +8,19 @@ const getQuizIdByAccessCodeController = async (req, res) => {
   if (!/^[a-zA-Z0-9]{4}$/.test(accessCode)) {
     return res.status(400).send('Invalid access code format');
   }
-  //Se trae el id del quiz:
-  const quizId = await GetQuizIdByAccessCode(accessCode);
+  try {
+    //Se trae el id del quiz:
+    const quizId = await GetQuizIdByAccessCode(accessCode);
 
-  //Se devuelve el id del quiz al frontend:
-  res.send({ status: 'ok', quizId: quizId });
+    if (!quizId) {
+      return res.status(404).send('Quiz not found');
+    }
+
+    //Se devuelve el id del quiz al frontend:
+    res.send({ status: 'ok', quizId: quizId });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export default getQuizIdByAccessCodeController;

@@ -5,6 +5,6 @@ const GetQuizIdByAccessCode = async (accessCode) => {
   const [id] = await pool.query(`SELECT id FROM quizzes WHERE access_code =?`, [
     accessCode,
   ]);
-  return id[0].id;
+  return id[0]?.id;
 };
 export default GetQuizIdByAccessCode;

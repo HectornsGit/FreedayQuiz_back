@@ -37,7 +37,10 @@ const login = async (req, res, next) => {
       expiresIn: '15d',
     });
 
-    res.send({ message: 'Loggeado correctamente', data: { token } });
+    res.send({
+      message: 'Loggeado correctamente',
+      data: { token, id: userDb.id },
+    });
   } catch (error) {
     next(error);
   }

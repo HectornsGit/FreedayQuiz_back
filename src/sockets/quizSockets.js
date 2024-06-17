@@ -1,36 +1,53 @@
+import { getQuiz } from '../models/quiz/index.js';
 import {
-  storeUserResponse,
-  getUserResponses,
-} from '../redisOperations/quizRedis.js';
+  storeQuizDataInRedis,
+  saveInitialPlayerData,
+  updatePlayerData,
+} from '../redisOperations/redisFunctions/index.js';
+import { getQuestionById } from '../redisOperations/redisFunctions/index.js';
 
 export default (io) => {
   io.on('connection', (socket) => {
     console.log('New client connected');
 
-    // Aquí puedes agregar tus manejadores de eventos de socket
-    socket.on('joinQuiz', (quizId) => {
-      // Aquí podrías cargar los datos del quiz desde MySQL si es necesario
+    //El jugador pone su nickname y se une al quiz. Sus datos se guardan en Redis
+    socket.on('joinQuiz', async (playerId, quizId, initialPlayerData) => {
+      try {
+        await saveInitialPlayerData(playerId, quizId, initialPlayerData);
+      } catch (error) {
+        console.error(error.message);
+        return;
+      }
+
+      //Conectarse a la sala del quiz:
+      socket.join(quizId);
+      io.to(quizId).emit('playerJoined', initialPlayerData);
     });
 
-    socket.on('submitAnswer', (data) => {
-      const { quizId, questionId, answerId, userId } = data;
-      storeUserResponse(quizId, userId, questionId, answerId);
-      io.to(quizId).emit('answerSubmitted', { userId, questionId, answerId });
+    //El master inicia el quiz. Se guardan los datos del quiz en Redis y se envía la primera pregunta al cliente
+    socket.on('startQuiz', async (loggedUserId, quizId) => {
+      const quiz = await getQuiz(loggedUserId, quizId);
+      await storeQuizDataInRedis(quiz);
+      const firstQuestion = await getQuestionById(quizId, 1);
+      //Emitir la primera pregunta a la sala correspondiente
+      io.to(quizId).emit('question', firstQuestion);
     });
-    socket.on('getScores', (quizId) => {
-      // Implementación de la lógica para calcular puntajes
-      getUserResponses(quizId, (err, responses) => {
-        if (err) {
-          socket.emit('error', 'Error retrieving user responses');
-          return;
-        }
 
-        // Lógica para calcular puntajes aquí
+    //Se escucha la respuesta del jugador y se compara con la respuesta correcta y se actualizan los datos para enviárselos al front:
+    socket.on('submitAnswer', async (data) => {
+      const { quizId, questionId, answer, playerId, questionNumber } = data;
+      console.log(data);
+      const currentQuestion = await getQuestionById(quizId, questionId);
+      let playerData = {};
+      if (currentQuestion.correctAnswer === answer) {
+        console.log('Correcto');
+        playerData = await updatePlayerData(quizId, questionId, playerId, 1);
+      } else {
+        console.log('Incorrecto');
+        playerData = await updatePlayerData(quizId, questionId, playerId, 0);
+      }
 
-        const scores = {}; // Calcula los puntajes aquí
-
-        socket.emit('quizScores', scores);
-      });
+      io.to(quizId).emit('answerSubmitted', playerData);
     });
 
     socket.on('disconnect', () => {

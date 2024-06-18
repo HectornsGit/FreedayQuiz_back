@@ -65,3 +65,7 @@ correctAnswer,
 image
 
 get /join-quiz/:access_code para obtener el id del quiz a través del código de acceso.
+
+delete /delete-quiz/:id para borrar un quiz y todas sus preguntas.
+
+delete /delete-question/:quizId/:questionId para borrar una pregunta.

@@ -8,6 +8,8 @@ import {
   updateQuizController,
   updateQuestionController,
   getQuizIdByAccessCodeController,
+  deleteQuizController,
+  deleteQuestionController,
 } from '../controllers/quiz/index.js';
 import multer from 'multer';
 import { limits, fileFilter, storage } from '../utils/multerConfig.js';
@@ -44,4 +46,14 @@ routes.get(
   '/join-quiz/:access_code',
   joinQuizLimiter,
   getQuizIdByAccessCodeController
+);
+
+//Borrar quiz:
+routes.delete('/delete-quiz/:id', validateAuth, deleteQuizController);
+
+//Borrar pregunta:
+routes.delete(
+  '/delete-question/:quizId/:questionId',
+  validateAuth,
+  deleteQuestionController
 );

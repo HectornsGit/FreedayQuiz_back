@@ -1,4 +1,5 @@
 import redisClient from '../redisClient.js';
+import { generateError } from '../../utils/index.js';
 
 export async function saveInitialPlayerData(playerId, quizId, initialData) {
   const quizKey = `quiz:${quizId}`;
@@ -7,6 +8,6 @@ export async function saveInitialPlayerData(playerId, quizId, initialData) {
 
     console.log(`Initial data for player ${playerId} saved for quiz ${quizId}`);
   } catch (error) {
-    console.error(`Error saving initial player data: ${error.message}`);
+    generateError(`Error saving initial player data: ${error.message}`);
   }
 }

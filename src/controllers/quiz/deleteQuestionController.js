@@ -9,7 +9,7 @@ const deleteQuestionController = async (req, res, next) => {
     res
       .status(200)
       .send(
-        `Pregunta con ids ${questionIds.map(
+        `Preguntas con ids ${questionIds.map(
           (q) => q
         )}  eliminadas correctamente`
       );

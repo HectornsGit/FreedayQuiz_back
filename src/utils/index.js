@@ -7,6 +7,7 @@ import {
 } from './joiValidation.js';
 import { storage, limits, fileFilter } from './multerConfig.js';
 import generateCode from './generateCode.js';
+import handleSocketErrors from './handleSocketErrors.js';
 
 export {
   generateError,
@@ -18,4 +19,5 @@ export {
   limits,
   fileFilter,
   generateCode,
+  handleSocketErrors,
 };

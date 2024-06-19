@@ -52,8 +52,4 @@ routes.get(
 routes.delete('/delete-quiz/:id', validateAuth, deleteQuizController);
 
 //Borrar pregunta:
-routes.delete(
-  '/delete-question/:quizId/:questionId',
-  validateAuth,
-  deleteQuestionController
-);
+routes.delete('/delete-question', validateAuth, deleteQuestionController);

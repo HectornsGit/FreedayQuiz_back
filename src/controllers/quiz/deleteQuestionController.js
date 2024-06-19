@@ -2,14 +2,20 @@ import { deleteQuestion } from '../../models/quiz/index.js';
 
 const deleteQuestionController = async (req, res, next) => {
   try {
-    await deleteQuestion(req.params.questionId, req.params.quizId);
+    const questionIds = req.body.questionIds;
+    const quizId = req.body.quizId;
+
+    await deleteQuestion(questionIds, quizId);
     res
       .status(200)
       .send(
-        `Pregunta con id ${req.params.questionId}  eliminada correctamente`
+        `Pregunta con ids ${questionIds.map(
+          (q) => q
+        )}  eliminadas correctamente`
       );
   } catch (error) {
-    console.log('Error al eliminar la pregunta');
+    console.log('Error al eliminar las preguntas');
+
     next(error);
   }
 };

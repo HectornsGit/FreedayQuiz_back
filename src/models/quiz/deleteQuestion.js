@@ -1,26 +1,29 @@
 import pool from '../../db/getPool.js';
 import useDb from '../../db/useDb.js';
-const deleteQuestion = async (questionId, quizId) => {
+const deleteQuestion = async (questionIds, quizId) => {
   await useDb();
 
-  //Selecciono el número de pregunta que voy a eliminar y la guardo en una variable:
-  const [questionToDelete] = await pool.query(
-    'SELECT question_number FROM questions  WHERE id =?',
-    [questionId]
-  );
-  const questionNumber = questionToDelete[0].question_number;
-  console.log('questionNumner', questionNumber);
-
-  //Elimino la pregunta:
-  await pool.query(`DELETE FROM questions WHERE quiz_id =? AND id = ?`, [
+  //Elimino las preguntas:
+  await pool.query(`DELETE FROM questions WHERE quiz_id = ? AND id IN (?)`, [
     quizId,
-    questionId,
+    questionIds,
   ]);
 
-  // Actualizo los question_number de las preguntas restantes
-  await pool.query(
-    'UPDATE questions SET question_number = question_number - 1 WHERE question_number > ?',
-    [questionNumber]
+  // Traigo los ids de las preguntas restantes correspondientes al quiz, pero ordenadas por question_number:
+  const [remainingQuestions] = await pool.query(
+    'SELECT id FROM questions WHERE quiz_id = ? ORDER BY question_number',
+    [quizId]
   );
+
+  //Actualizo los question_number por orden:
+  for (let i = 0; i < remainingQuestions.length; i++) {
+    const questionId = remainingQuestions[i].id;
+    const questionNumber = i + 1;
+
+    await pool.query('UPDATE questions SET question_number = ? WHERE id = ?', [
+      questionNumber,
+      questionId,
+    ]);
+  }
 };
 export default deleteQuestion;

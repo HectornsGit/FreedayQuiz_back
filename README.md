@@ -68,4 +68,8 @@ get /join-quiz/:access_code para obtener el id del quiz a través del código de
 
 delete /delete-quiz/:id para borrar un quiz y todas sus preguntas.
 
-delete /delete-question/:quizId/:questionId para borrar una pregunta.
+delete /delete-question para borrar preguntas, tanto de una en una como varias a la vez. La estructura necesaria del json que se enviará en el body es la siguiente:
+Ejemplo:
+{"quizId": "1",
+"questionIds": [28, 34, 36]
+}

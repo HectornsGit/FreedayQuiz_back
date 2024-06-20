@@ -55,7 +55,7 @@ const getQuiz = async (loggedUserId, id) => {
 
     return quiz;
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
   }
 };
 

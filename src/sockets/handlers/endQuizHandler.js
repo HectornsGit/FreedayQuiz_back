@@ -1,4 +1,4 @@
-import { updateQuiz } from '../../models/quiz/index.js';
+import { updateQuestions, updateQuiz} from '../../models/quiz/index.js';
 import {
   deleteAllData,
   getAllQuestions,
@@ -14,15 +14,19 @@ const endQuizHandler = (socket, io) => {
       //Redis:
       const currentQuizData = await getQuizData(quizId);
       const allQuestions = await getAllQuestions(quizId, numberOfQuestions);
-      console.log(allQuestions);
+      
+      
       //MysQL:
       await updateQuiz(currentQuizData);
-
+      allQuestions.map(async (question)=>{
+        return await updateQuestions(question)
+      })
+      
       //Elimino todos los datos en Redis:
       await deleteAllData(quizId);
 
       //Emito el evento al front:
-      io.to(quizId).emit('quizEnded', { quizId });
+      io.to(quizId).emit('quizEnded', { message: "Datos guardados en la base de datos" });
     } catch (error) {
       handleSocketErrors(error, socket);
     }

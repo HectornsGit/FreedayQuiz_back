@@ -3,9 +3,10 @@ import { handleSocketErrors } from '../../utils/index.js';
 
 const updateQuizDataHandler = (socket, io) => {
   try {
-    socket.on('updateQuizData', async (_quizId, quizData) => {
+    socket.on('updateQuizData', async (quizId, quizData) => {
       //Actualizo datos del quiz en Redis:
       await updateQuizData(quizData);
+      io.to(quizId).emit("quizUpdatedMessage", {message: "Datos del quiz actualizados correctamente"})
     });
   } catch (error) {
     handleSocketErrors(error, socket);

@@ -1,6 +1,6 @@
 import redisClient from '../redisClient.js';
+import { generateError } from '../../utils/index.js';
 export async function updatePlayerData(quizId, questionId, playerId, points) {
-  console.log(playerId);
   const quizKey = `quiz:${quizId}`;
   try {
     const playerData = await redisClient.hGet(quizKey, playerId);
@@ -16,9 +16,9 @@ export async function updatePlayerData(quizId, questionId, playerId, points) {
 
       return parsedData;
     } else {
-      console.error(`Player data for ${playerId} not found in quiz ${quizId}`);
+      generateError(`Player data for ${playerId} not found in quiz ${quizId}`);
     }
   } catch (error) {
-    console.error(`Error updating player data: ${error.message}`);
+    generateError(`Error updating player data: ${error.message}`);
   }
 }

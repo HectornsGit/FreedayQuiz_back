@@ -1,4 +1,5 @@
 import redisClient from '../redisClient.js';
+import { generateError } from '../../utils/index.js';
 
 export async function deleteAllData(quizId) {
   try {
@@ -10,9 +11,9 @@ export async function deleteAllData(quizId) {
       await redisClient.del(keys);
       console.log(`Deleted ${keys.length} keys for quiz ${quizId}`);
     } else {
-      console.log(`No keys found for quiz ${quizId}`);
+      generateError(`No keys found for quiz ${quizId}`, 404);
     }
   } catch (error) {
-    console.error(`Error deleting data for quiz ${quizId}: ${error.message}`);
+    generateError(`Error deleting data for quiz ${quizId}: ${error.message}`);
   }
 }

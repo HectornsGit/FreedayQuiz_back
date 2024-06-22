@@ -1,5 +1,6 @@
 import useDb from '../../db/useDb.js';
 import pool from '../../db/getPool.js';
+import {generateError} from "../../utils/index.js"
 
 const getQuiz = async (loggedUserId, id) => {
   await useDb();
@@ -55,7 +56,7 @@ const getQuiz = async (loggedUserId, id) => {
 
     return quiz;
   } catch (error) {
-    console.log(error);
+    generateError(error.message);
   }
 };
 

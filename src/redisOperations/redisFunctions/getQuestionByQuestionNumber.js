@@ -1,21 +1,24 @@
+import generateError from '../../utils/generateError.js';
 import redisClient from '../redisClient.js';
 
 export async function getQuestionByQuestionNumber(quizId, questionNumber) {
   try {
+    //En este caso se guarda cada pregunta con un key único, dentro del key general de quiz (quizId). De esta forma es más facil recuperar y actualizar la información de la pregunta.
     const questionKey = `quiz:${quizId}:question:${questionNumber}`;
     const retrievedQuestion = await redisClient.get(questionKey);
 
     if (!retrievedQuestion) {
-      return {
-        error: `Question number ${questionNumber} not found for quiz ${quizId}`,
-      };
+      generateError(
+        `Question number ${questionNumber} not found for quiz ${quizId}`,
+        404
+      );
     }
 
     const questionObject = JSON.parse(retrievedQuestion);
     return questionObject;
   } catch (error) {
-    return {
-      error: `An error occurred while fetching question number ${questionNumber} for quiz ${quizId}: ${error.message}`,
-    };
+    generateError(
+      `An error occurred while fetching question number ${questionNumber} for quiz ${quizId}: ${error.message}`
+    );
   }
 }

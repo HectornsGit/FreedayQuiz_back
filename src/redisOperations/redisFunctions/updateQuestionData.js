@@ -1,7 +1,7 @@
 import redisClient from '../redisClient.js'
-import { generateError } from '../../utils/index.js'
+import { handleSocketErrors } from '../../utils/index.js'
 
-export default async function updateQuestionData(questionData, quizId) {
+export default async function updateQuestionData(questionData, quizId, socket) {
     const quizKey = `quiz:${quizId}:question:${questionData.questionNumber}`
 
     try {
@@ -39,7 +39,6 @@ export default async function updateQuestionData(questionData, quizId) {
             console.log('No hay cambios para actualizar')
         }
     } catch (error) {
-        console.log(error.message)
-        throw generateError(`Se está enviando un error: ${error.message}`)
+        handleSocketErrors(error, socket)
     }
 }

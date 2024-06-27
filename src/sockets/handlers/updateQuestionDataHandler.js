@@ -5,7 +5,7 @@ const updateQuestionDataHandler = (socket, io) => {
     try {
         socket.on('updateQuestionData', async (quizId, questionData) => {
             // Actualizo datos de la pregunta en Redis:
-            await updateQuestionData(questionData, quizId)
+            await updateQuestionData(questionData, quizId, socket)
             io.to(quizId).emit('questionUpdatedMessage', {
                 message: 'Pregunta actualizada correctamente',
             })

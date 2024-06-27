@@ -1,4 +1,7 @@
-import { getQuestionByQuestionNumber } from '../../redisOperations/redisFunctions/index.js'
+import {
+    getQuestionByQuestionNumber,
+    questionState,
+} from '../../redisOperations/redisFunctions/index.js'
 import { handleSocketErrors } from '../../utils/index.js'
 
 const nextQuestionHandler = (socket, io) => {
@@ -13,6 +16,8 @@ const nextQuestionHandler = (socket, io) => {
                         socket
                     )
                     io.to(quizId).emit('question', question)
+                    //Se actualiza el estado question:
+                    await questionState(quizId, question, socket)
                 } else {
                     io.to(quizId).emit('noMoreQuestions', () => {})
                     console.log('No hay más preguntas')

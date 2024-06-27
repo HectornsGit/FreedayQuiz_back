@@ -13,12 +13,13 @@ const endQuizHandler = (socket, io) => {
 
             //Redis:
             const currentQuizData = await getQuizData(quizId, socket)
+
             const allQuestions = await getAllQuestions(
                 quizId,
                 numberOfQuestions,
                 socket
             )
-
+            console.log('all', allQuestions)
             //MysQL:
             await updateQuiz(currentQuizData)
             allQuestions.map(async (question) => {

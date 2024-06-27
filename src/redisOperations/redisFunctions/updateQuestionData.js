@@ -1,5 +1,6 @@
 import redisClient from '../redisClient.js'
 import { handleSocketErrors } from '../../utils/index.js'
+import { questionState } from './questionState.js'
 
 export default async function updateQuestionData(questionData, quizId, socket) {
     const quizKey = `quiz:${quizId}:question:${questionData.questionNumber}`
@@ -34,6 +35,7 @@ export default async function updateQuestionData(questionData, quizId, socket) {
         // // Si hay campos para actualizar, hacer la actualización en Redis
         if (Object.keys(fieldsToUpdate).length > 0) {
             await redisClient.set(quizKey, JSON.stringify(readyData))
+            await questionState(quizId, readyData, socket)
             console.log('Datos actualizados correctamente en Redis')
         } else {
             console.log('No hay cambios para actualizar')

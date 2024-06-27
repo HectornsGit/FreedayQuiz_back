@@ -1,4 +1,7 @@
-import { getQuestionByQuestionNumber } from '../../redisOperations/redisFunctions/index.js'
+import {
+    getQuestionByQuestionNumber,
+    questionState,
+} from '../../redisOperations/redisFunctions/index.js'
 import { handleSocketErrors } from '../../utils/index.js'
 
 const startQuizHandler = (socket, io) => {
@@ -13,6 +16,9 @@ const startQuizHandler = (socket, io) => {
 
             //Emitir la primera pregunta a la sala correspondiente
             io.to(quizId).emit('question', firstQuestion)
+
+            //Guardar la pregunta en el estado question:
+            await questionState(quizId, firstQuestion, socket)
         } catch (error) {
             handleSocketErrors(error, socket)
         }

@@ -12,6 +12,11 @@ export async function storeQuizDataInRedis(quizData, socket) {
         await redisClient.hSet(quizKey, 'description', quizData.description)
         await redisClient.hSet(quizKey, 'ownerId', quizData.owner_id)
         await redisClient.hSet(quizKey, 'access_code', quizData.access_code)
+        await redisClient.hSet(
+            quizKey,
+            'number_of_questions',
+            quizData.questions.length
+        )
 
         // Guardo las preguntas de forma separada, con un key para cada una, para la fácil obtención y edición de cada una:
         quizData.questions.forEach(async (question) => {

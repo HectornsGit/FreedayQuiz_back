@@ -1,5 +1,6 @@
 import redisClient from '../redisClient.js'
 import { handleSocketErrors } from '../../utils/index.js'
+import { generateError } from '../../utils/index.js'
 
 export async function deleteAllData(quizId, socket) {
     try {

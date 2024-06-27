@@ -1,5 +1,8 @@
 import { getQuiz } from '../../models/quiz/index.js'
-import { storeQuizDataInRedis } from '../../redisOperations/redisFunctions/index.js'
+import {
+    getQuizData,
+    storeQuizDataInRedis,
+} from '../../redisOperations/redisFunctions/index.js'
 import { handleSocketErrors } from '../../utils/index.js'
 
 export default function getQuizDataHandler(socket, io) {
@@ -9,9 +12,18 @@ export default function getQuizDataHandler(socket, io) {
             const quiz = await getQuiz(loggedUserId, quizId)
             //Redis:
             await storeQuizDataInRedis(quiz, socket)
+            const updatedData = await getQuizData(quizId, socket)
+            const DataToSend = {
+                title: updatedData.title,
+                description: updatedData.description,
+                access_code: updatedData.access_code,
+                id: updatedData.id,
+                owner_id: updatedData.ownerId,
+                number_of_questions: updatedData.number_of_questions,
+            }
 
             socket.join(quizId)
-            io.to(quizId).emit('quizData', quiz)
+            io.to(quizId).emit('quizData', DataToSend)
         } catch (error) {
             handleSocketErrors(error, socket)
         }

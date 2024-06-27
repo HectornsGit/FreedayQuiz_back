@@ -5,10 +5,19 @@ const updateQuizDataHandler = (socket, io) => {
     try {
         socket.on('updateQuizData', async (quizId, quizData) => {
             //Actualizo datos del quiz en Redis:
-            await updateQuizData(quizData, socket)
-            io.to(quizId).emit('quizUpdatedMessage', {
-                message: 'Datos del quiz actualizados correctamente',
-            })
+            const updatedData = await updateQuizData(quizData, socket)
+
+            if (updatedData) {
+                io.to(quizId).emit('quizUpdatedMessage', {
+                    status: 'ok',
+                    message: 'Datos del quiz actualizados correctamente',
+                })
+            } else {
+                io.to(quizId).emit('quizUpdatedMessage', {
+                    status: 'error',
+                    message: 'No hay datos para actualizar',
+                })
+            }
         })
     } catch (error) {
         handleSocketErrors(error, socket)

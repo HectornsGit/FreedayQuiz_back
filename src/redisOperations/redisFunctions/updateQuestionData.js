@@ -37,8 +37,10 @@ export default async function updateQuestionData(questionData, quizId, socket) {
             await redisClient.set(quizKey, JSON.stringify(readyData))
             await questionState(quizId, readyData, socket)
             console.log('Datos actualizados correctamente en Redis')
+            return readyData
         } else {
             console.log('No hay cambios para actualizar')
+            return null
         }
     } catch (error) {
         handleSocketErrors(error, socket)

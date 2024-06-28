@@ -16,6 +16,7 @@ const nextQuestionHandler = (socket, io) => {
                         socket
                     )
                     io.to(quizId).emit('question', question)
+
                     //Se actualiza el estado question:
                     await questionState(quizId, question, socket)
                 } else {

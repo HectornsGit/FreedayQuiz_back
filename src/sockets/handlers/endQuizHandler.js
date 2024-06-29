@@ -19,7 +19,7 @@ const endQuizHandler = (socket, io) => {
                 numberOfQuestions,
                 socket
             )
-            console.log('all', allQuestions)
+
             //MysQL:
             await updateQuiz(currentQuizData)
             allQuestions.map(async (question) => {

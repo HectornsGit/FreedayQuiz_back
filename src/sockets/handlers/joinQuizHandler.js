@@ -11,8 +11,6 @@ const joinQuizHandler = (socket, io) => {
                 socket
             )
 
-            //Conectarse a la sala del quiz y emitir el evento enviando la data:
-            socket.join(quizId)
             io.to(quizId).emit('playerJoined', initialPlayerData)
         } catch (error) {
             handleSocketErrors(error, socket)

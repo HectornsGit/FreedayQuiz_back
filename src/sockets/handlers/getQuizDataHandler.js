@@ -22,7 +22,7 @@ export default function getQuizDataHandler(socket, io) {
                 number_of_questions: updatedData.number_of_questions,
             }
 
-            socket.join(quizId)
+            // socket.join(quizId)
             io.to(quizId).emit('quizData', DataToSend)
         } catch (error) {
             handleSocketErrors(error, socket)

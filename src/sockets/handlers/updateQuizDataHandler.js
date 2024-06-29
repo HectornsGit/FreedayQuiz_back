@@ -11,11 +11,13 @@ const updateQuizDataHandler = (socket, io) => {
                 io.to(quizId).emit('quizUpdatedMessage', {
                     status: 'ok',
                     message: 'Datos del quiz actualizados correctamente',
+                    quizUpdated: quizData,
                 })
             } else {
                 io.to(quizId).emit('quizUpdatedMessage', {
                     status: 'error',
                     message: 'No hay datos para actualizar',
+                    quizUpdated: quizData,
                 })
             }
         })

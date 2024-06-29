@@ -4,9 +4,11 @@ import {
     getQuizData,
 } from '../../redisOperations/redisFunctions/index.js'
 
-const sendQuizId = (socket) => {
+const sendQuizId = async (socket, _io) => {
     socket.on('sendQuizId', async (quizId) => {
+        quizId = quizId.toString()
         socket.join(quizId)
+
         //Se recuperan y se envían los datos a todos los clientes de la sala:
         const playerData = await getPlayersData(quizId, socket)
         const quizData = await getQuizData(quizId, socket)

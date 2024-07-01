@@ -1,6 +1,9 @@
 import redisClient from '../redisClient.js'
-import { generateError, handleSocketErrors } from '../../utils/index.js'
-import { calculatePoints } from '../../utils/index.js'
+import {
+    generateError,
+    handleSocketErrors,
+    calculatePoints,
+} from '../../utils/index.js'
 
 export async function updatePlayerData(data, socket, currentQuestion) {
     try {

@@ -1,4 +1,5 @@
 import {
+    getConditionalStates,
     getPlayersData,
     getQuestionState,
     getQuizData,
@@ -13,6 +14,7 @@ const sendQuizId = async (socket, _io) => {
         const playerData = await getPlayersData(quizId, socket)
         const quizData = await getQuizData(quizId, socket)
         const currentQuestion = await getQuestionState(quizId, socket)
+        const updatedStates = await getConditionalStates(quizId)
 
         const quizDataToSend = {
             title: quizData.title,
@@ -24,10 +26,11 @@ const sendQuizId = async (socket, _io) => {
         }
 
         socket.emit(
-            'sendUpdatedQuizData',
+            'sendRecoveryQuizData',
             playerData,
             quizDataToSend,
-            currentQuestion
+            currentQuestion,
+            updatedStates
         )
     })
 }

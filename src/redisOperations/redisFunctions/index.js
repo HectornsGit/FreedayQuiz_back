@@ -10,11 +10,14 @@ import { getAllQuestions } from './getAllQuestions.js'
 import { getPlayersData } from './getPlayersData.js'
 import { questionState } from './questionState.js'
 import { getQuestionState } from './getQuestionState.js'
+import { conditionalStates } from './conditionalStates.js'
+import { getConditionalStates } from './getConditionalStates.js'
 export {
     getQuizData,
     getPlayersData,
     deleteAllData,
     getQuestionState,
+    getConditionalStates,
     storeQuizDataInRedis,
     getQuestionByQuestionNumber,
     getAllQuestions,
@@ -23,4 +26,5 @@ export {
     updateQuizData,
     updateQuestionData,
     questionState,
+    conditionalStates,
 }

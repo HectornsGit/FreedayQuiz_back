@@ -1,3 +1,4 @@
+import { conditionalStates } from '../redisOperations/redisFunctions/conditionalStates.js'
 import {
     endQuizHandler,
     getQuizDataHandler,
@@ -18,7 +19,13 @@ export default (io) => {
         if (socket.recovered) {
             console.log('Reconexión exitosa')
         } else {
+            const states = {
+                isQuestionRunning: false,
+                showScores: false,
+                isDisabled: true,
+            }
             console.log('Nuevo cliente conectado')
+            await conditionalStates('1', states)
         }
 
         //Se une el nuevo cliente en la sala del quiz y se le envían todos los datos necesarios para que los sincronice en su IU, tanto al conectarse como al reconectarse:

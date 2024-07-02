@@ -1,4 +1,3 @@
-import { conditionalStates } from '../redisOperations/redisFunctions/conditionalStates.js'
 import {
     endQuizHandler,
     getQuizDataHandler,
@@ -15,21 +14,29 @@ import {
 
 export default (io) => {
     io.on('connection', async (socket) => {
+        //Conexión a la sala:
+        let quizId
+        socket.on('sendQuizId', (id) => {
+            quizId = id
+            socket.join(quizId)
+            //Se actualiza el número de conectados a la sala:
+            if (quizId) {
+                const clientsNumber =
+                    io.sockets.adapter.rooms.get(quizId)?.size || 0
+                io.to(quizId).emit('clientsNumber', clientsNumber)
+                console.log('Jugadores en en la sala:', clientsNumber)
+            }
+        })
+
         //En caso de reconexión dentro del tiempo especificado, se recuperan los datos: socket.id, socket.rooms y socket.data.
         if (socket.recovered) {
-            console.log('Reconexión exitosa')
+            console.log('Reconexión exitosa', socket.id)
         } else {
-            const states = {
-                isQuestionRunning: false,
-                showScores: false,
-                isDisabled: true,
-            }
-            console.log('Nuevo cliente conectado')
-            await conditionalStates('1', states)
+            console.log('Nuevo cliente conectado', socket.id)
         }
 
         //Se une el nuevo cliente en la sala del quiz y se le envían todos los datos necesarios para que los sincronice en su IU, tanto al conectarse como al reconectarse:
-        sendQuizId(socket, io)
+        // sendQuizId(socket, io)
 
         //Guardamos el quiz correspondiente con el quizId en Redis:
         getQuizDataHandler(socket, io)
@@ -62,7 +69,12 @@ export default (io) => {
         endQuizHandler(socket, io)
 
         socket.on('disconnect', () => {
+            //Se actualiza el número de conectados a la sala:
+            const clientsNumber =
+                io.sockets.adapter.rooms.get(quizId)?.size || 0
+            io.to(quizId).emit('clientsNumber', clientsNumber)
             console.log('Client disconnected')
+            console.log('Jugadores restantes en la sala:', clientsNumber)
         })
     })
 }

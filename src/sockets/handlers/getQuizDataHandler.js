@@ -6,7 +6,8 @@ import {
 import { handleSocketErrors } from '../../utils/index.js'
 
 export default function getQuizDataHandler(socket, io) {
-    socket.on('getQuizData', async (loggedUserId, quizId) => {
+    socket.on('getQuizData', async (loggedUserId, id) => {
+        const quizId = id.toString()
         try {
             //MySQL:
             const quiz = await getQuiz(loggedUserId, quizId)

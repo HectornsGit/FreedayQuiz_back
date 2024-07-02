@@ -1,13 +1,14 @@
 import {
     getConditionalStates,
     getPlayersData,
+    getQuestionByQuestionNumber,
     getQuestionState,
     getQuizData,
 } from '../../redisOperations/redisFunctions/index.js'
 
-const sendQuizId = async (socket, _io) => {
-    socket.on('sendQuizId', async (quizId) => {
-        quizId = quizId.toString()
+const sendRecoveryData = async (socket, io) => {
+    socket.on('requestRecoveryData', async (quizId) => {
+        //Se une al cliente a la sala:
         socket.join(quizId)
 
         //Se recuperan y se envían los datos a todos los clientes de la sala:
@@ -16,6 +17,15 @@ const sendQuizId = async (socket, _io) => {
         const currentQuestion = await getQuestionState(quizId, socket)
         const updatedStates = await getConditionalStates(quizId)
 
+        //Si no existe currentQuestion, se envía la pregunta número 1 al estado:
+        let firstQuestion
+        if (!currentQuestion) {
+            firstQuestion = await getQuestionByQuestionNumber(
+                quizId,
+                '1',
+                socket
+            )
+        }
         const quizDataToSend = {
             title: quizData.title,
             description: quizData.description,
@@ -25,13 +35,20 @@ const sendQuizId = async (socket, _io) => {
             number_of_questions: quizData.number_of_questions,
         }
 
+        const question = currentQuestion || firstQuestion
+        const newStates = updatedStates || {
+            isQuestionRunning: false,
+            showScores: false,
+            isDisabled: true,
+        }
+
         socket.emit(
             'sendRecoveryQuizData',
             playerData,
             quizDataToSend,
-            currentQuestion,
-            updatedStates
+            question,
+            newStates
         )
     })
 }
-export default sendQuizId
+export default sendRecoveryData

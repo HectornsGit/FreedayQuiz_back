@@ -1,4 +1,3 @@
-import { conditionalStates } from '../redisOperations/redisFunctions/conditionalStates.js'
 import {
     endQuizHandler,
     getQuizDataHandler,
@@ -8,28 +7,36 @@ import {
     submitAnswerHandler,
     updateQuestionDataHandler,
     updateQuizDataHandler,
-    sendQuizId,
+    sendRecoveryData,
     startQuestionHandler,
     showScoresHandler,
 } from './handlers/index.js'
 
 export default (io) => {
     io.on('connection', async (socket) => {
+        //Conexión a la sala:
+        let quizId
+        socket.on('sendQuizId', (id) => {
+            quizId = id
+            socket.join(quizId)
+            //Se actualiza el número de conectados a la sala:
+            if (quizId) {
+                const clientsNumber =
+                    io.sockets.adapter.rooms.get(quizId)?.size || 0
+                io.to(quizId).emit('clientsNumber', clientsNumber, socket.data)
+                console.log('Jugadores en en la sala:', clientsNumber)
+            }
+        })
+
         //En caso de reconexión dentro del tiempo especificado, se recuperan los datos: socket.id, socket.rooms y socket.data.
         if (socket.recovered) {
-            console.log('Reconexión exitosa')
+            console.log('Reconexión exitosa', socket.id)
         } else {
-            const states = {
-                isQuestionRunning: false,
-                showScores: false,
-                isDisabled: true,
-            }
-            console.log('Nuevo cliente conectado')
-            await conditionalStates('1', states)
+            console.log('Nuevo cliente conectado', socket.id)
         }
 
         //Se une el nuevo cliente en la sala del quiz y se le envían todos los datos necesarios para que los sincronice en su IU, tanto al conectarse como al reconectarse:
-        sendQuizId(socket, io)
+        sendRecoveryData(socket, io)
 
         //Guardamos el quiz correspondiente con el quizId en Redis:
         getQuizDataHandler(socket, io)
@@ -61,8 +68,13 @@ export default (io) => {
         //Finalizar el quiz, actualizar los datos en MySQL y borrarlos de Redis:
         endQuizHandler(socket, io)
 
-        socket.on('disconnect', () => {
-            console.log('Client disconnected')
+        socket.on('disconnect', async () => {
+            //Se actualiza el número de conectados a la sala:
+            const clientsNumber =
+                io.sockets.adapter.rooms.get(quizId)?.size || 0
+            io.to(quizId).emit('clientsNumber', clientsNumber, socket.data)
+            console.log('Client disconnected', socket.data)
+            console.log('Jugadores restantes en la sala:', clientsNumber)
         })
     })
 }

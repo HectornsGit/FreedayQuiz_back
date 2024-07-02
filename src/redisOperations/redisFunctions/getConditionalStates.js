@@ -13,7 +13,7 @@ export async function getConditionalStates(quizId) {
             return JSON.parse(updatedStates)
         } else {
             console.log('No hay estados que actualizar')
-            return null
+            return undefined
         }
     } catch (error) {
         handleSocketErrors(error, socket)

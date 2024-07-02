@@ -6,7 +6,7 @@ import nextQuestionHandler from './nextQuestionHandler.js'
 import updateQuizDataHandler from './updateQuizDataHandler.js'
 import endQuizHandler from './endQuizHandler.js'
 import updateQuestionDataHandler from './updateQuestionDataHandler.js'
-import sendQuizId from './sendQuizId.js'
+import sendRecoveryData from './sendRecoveryData.js'
 import startQuestionHandler from './startQuestionHandler.js'
 import showScoresHandler from './showScoresHandler.js'
 
@@ -21,5 +21,5 @@ export {
     updateQuestionDataHandler,
     showScoresHandler,
     endQuizHandler,
-    sendQuizId,
+    sendRecoveryData,
 }

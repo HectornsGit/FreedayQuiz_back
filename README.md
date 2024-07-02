@@ -73,3 +73,8 @@ Ejemplo:
 {"quizId": "1",
 "questionIds": [28, 34, 36]
 }
+
+Systema de conexiones/desconexiones:
+Si un cliente se desconecta, el sistema tratará de reconectarse automáticamente.
+Si se conecta antes de los dos minutos, todos sus datos se sincronizarán con los actuales del quiz, incluyendo el timer de las preguntas, y se le redirigirá a la pantalla activa.
+Si un cliente llega tarde y el quiz ya ha comenzado, tras poner su nombre de usuario se sincronizarán todos los datos y se le redirigirá a la pantalla activa.

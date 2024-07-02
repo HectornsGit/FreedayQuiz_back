@@ -7,7 +7,7 @@ import {
     submitAnswerHandler,
     updateQuestionDataHandler,
     updateQuizDataHandler,
-    sendQuizId,
+    sendRecoveryData,
     startQuestionHandler,
     showScoresHandler,
 } from './handlers/index.js'
@@ -23,7 +23,7 @@ export default (io) => {
             if (quizId) {
                 const clientsNumber =
                     io.sockets.adapter.rooms.get(quizId)?.size || 0
-                io.to(quizId).emit('clientsNumber', clientsNumber)
+                io.to(quizId).emit('clientsNumber', clientsNumber, socket.data)
                 console.log('Jugadores en en la sala:', clientsNumber)
             }
         })
@@ -36,7 +36,7 @@ export default (io) => {
         }
 
         //Se une el nuevo cliente en la sala del quiz y se le envían todos los datos necesarios para que los sincronice en su IU, tanto al conectarse como al reconectarse:
-        // sendQuizId(socket, io)
+        sendRecoveryData(socket, io)
 
         //Guardamos el quiz correspondiente con el quizId en Redis:
         getQuizDataHandler(socket, io)
@@ -68,12 +68,12 @@ export default (io) => {
         //Finalizar el quiz, actualizar los datos en MySQL y borrarlos de Redis:
         endQuizHandler(socket, io)
 
-        socket.on('disconnect', () => {
+        socket.on('disconnect', async () => {
             //Se actualiza el número de conectados a la sala:
             const clientsNumber =
                 io.sockets.adapter.rooms.get(quizId)?.size || 0
-            io.to(quizId).emit('clientsNumber', clientsNumber)
-            console.log('Client disconnected')
+            io.to(quizId).emit('clientsNumber', clientsNumber, socket.data)
+            console.log('Client disconnected', socket.data)
             console.log('Jugadores restantes en la sala:', clientsNumber)
         })
     })

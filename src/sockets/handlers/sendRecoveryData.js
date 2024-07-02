@@ -1,5 +1,4 @@
 import {
-    conditionalStates,
     getConditionalStates,
     getPlayersData,
     getQuestionByQuestionNumber,
@@ -7,15 +6,10 @@ import {
     getQuizData,
 } from '../../redisOperations/redisFunctions/index.js'
 
-const sendQuizId = async (socket, io) => {
-    socket.on('sendQuizId', async (quizId) => {
-        quizId = quizId.toString()
-
+const sendRecoveryData = async (socket, io) => {
+    socket.on('requestRecoveryData', async (quizId) => {
         //Se une al cliente a la sala:
         socket.join(quizId)
-
-        //Se envian al front el número de conectados a la sala:
-        const clientsNumber = io.sockets.adapter.rooms.get(quizId)?.size || 0
 
         //Se recuperan y se envían los datos a todos los clientes de la sala:
         const playerData = await getPlayersData(quizId, socket)
@@ -48,14 +42,13 @@ const sendQuizId = async (socket, io) => {
             isDisabled: true,
         }
 
-        // socket.emit(
-        //     'sendRecoveryQuizData',
-        //     playerData,
-        //     quizDataToSend,
-        //     question,
-        //     newStates
-        // )
-        // io.to(quizId).emit('clientsNumber', clientsNumber)
+        socket.emit(
+            'sendRecoveryQuizData',
+            playerData,
+            quizDataToSend,
+            question,
+            newStates
+        )
     })
 }
-export default sendQuizId
+export default sendRecoveryData

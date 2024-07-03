@@ -1,12 +1,12 @@
-import useDb from '../../db/useDb.js';
-import pool from '../../db/getPool.js';
-import {generateError} from "../../utils/index.js"
+import useDb from '../../db/useDb.js'
+import pool from '../../db/getPool.js'
+import { generateError } from '../../utils/index.js'
 
 const getQuiz = async (loggedUserId, id) => {
-  await useDb();
-  try {
-    const [rows] = await pool.query(
-      `SELECT 
+    await useDb()
+    try {
+        const [rows] = await pool.query(
+            `SELECT 
         q.id AS quizId, 
         q.title,
         q.description, 
@@ -25,39 +25,40 @@ const getQuiz = async (loggedUserId, id) => {
     LEFT JOIN questions qu ON q.id = qu.quiz_id 
     WHERE q.owner_id = ? AND q.id = ?
     ORDER BY qu.question_number;`,
-      [loggedUserId, id]
-    );
+            [loggedUserId, id]
+        )
 
-    if (rows.length === 0) {
-      return null;
+        if (rows.length === 0) {
+            console.log('El usuario logueado no es el propietario del quiz')
+            return null
+        }
+
+        const quiz = {
+            id: rows[0].quizId,
+            title: rows[0].title,
+            description: rows[0].description,
+            owner_id: rows[0].ownerId,
+            access_code: rows[0].accessCode,
+            questions: rows
+                .filter((row) => row.questionId !== null)
+                .map((row) => ({
+                    id: row.questionId,
+                    quizId: row.quizId,
+                    question: row.question,
+                    questionNumber: row.questionNumber,
+                    questionTime: row.questionTime,
+                    image: row.image,
+                    optionA: row.optionA,
+                    optionB: row.optionB,
+                    optionC: row.optionC,
+                    correctAnswer: row.correctAnswer,
+                })),
+        }
+
+        return quiz
+    } catch (error) {
+        generateError(error.message)
     }
+}
 
-    const quiz = {
-      id: rows[0].quizId,
-      title: rows[0].title,
-      description: rows[0].description,
-      owner_id: rows[0].ownerId,
-      access_code: rows[0].accessCode,
-      questions: rows
-        .filter((row) => row.questionId !== null)
-        .map((row) => ({
-          id: row.questionId,
-          quizId: row.quizId,
-          question: row.question,
-          questionNumber: row.questionNumber,
-          questionTime: row.questionTime,
-          image: row.image,
-          optionA: row.optionA,
-          optionB: row.optionB,
-          optionC: row.optionC,
-          correctAnswer: row.correctAnswer,
-        })),
-    };
-
-    return quiz;
-  } catch (error) {
-    generateError(error.message);
-  }
-};
-
-export default getQuiz;
+export default getQuiz

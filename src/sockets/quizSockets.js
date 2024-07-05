@@ -16,14 +16,22 @@ export default (io) => {
     io.on('connection', async (socket) => {
         //Conexión a la sala:
         let quizId
-        socket.on('sendQuizId', (id) => {
+        socket.on('sendQuizId', async (id) => {
             quizId = id
             socket.join(quizId)
             //Se actualiza el número de conectados a la sala:
             if (quizId) {
                 const clientsNumber =
                     io.sockets.adapter.rooms.get(quizId)?.size || 0
-                io.to(quizId).emit('clientsNumber', clientsNumber, socket.data)
+
+                const state = 'connected'
+                io.to(quizId).emit(
+                    'clientsNumber',
+                    clientsNumber,
+                    socket.data,
+                    state
+                )
+
                 console.log('Jugadores en en la sala:', clientsNumber)
             }
         })
@@ -37,6 +45,21 @@ export default (io) => {
 
         //Se une el nuevo cliente en la sala del quiz y se le envían todos los datos necesarios para que los sincronice en su IU, tanto al conectarse como al reconectarse:
         sendRecoveryData(socket, io)
+
+        if (socket) {
+            socket.on('setOnline', () => {
+                const clientsNumber =
+                    io.sockets.adapter.rooms.get(quizId)?.size || 0
+                console.log(socket.data)
+                const state = 'connected'
+                io.to(quizId).emit(
+                    'clientsNumber',
+                    clientsNumber,
+                    socket.data,
+                    state
+                )
+            })
+        }
 
         //Guardamos el quiz correspondiente con el quizId en Redis:
         getQuizDataHandler(socket, io)
@@ -72,8 +95,15 @@ export default (io) => {
             //Se actualiza el número de conectados a la sala:
             const clientsNumber =
                 io.sockets.adapter.rooms.get(quizId)?.size || 0
-            io.to(quizId).emit('clientsNumber', clientsNumber, socket.data)
-            console.log('Client disconnected', socket.data)
+            const state = 'disconnect'
+            io.to(quizId).emit(
+                'clientsNumber',
+                clientsNumber,
+                socket.data,
+                state
+            )
+
+            console.log('Client disconnected', socket.id)
             console.log('Jugadores restantes en la sala:', clientsNumber)
         })
     })

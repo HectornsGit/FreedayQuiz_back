@@ -26,14 +26,18 @@ const sendRecoveryData = async (socket, io) => {
                 socket
             )
         }
-        const quizDataToSend = {
-            title: quizData.title,
-            description: quizData.description,
-            access_code: quizData.access_code,
-            id: quizData.id,
-            owner_id: quizData.ownerId,
-            number_of_questions: quizData.number_of_questions,
-        }
+
+        let quizDataToSend
+        quizData.title
+            ? (quizDataToSend = {
+                  title: quizData.title,
+                  description: quizData.description,
+                  access_code: quizData.access_code,
+                  id: quizData.id,
+                  owner_id: quizData.ownerId,
+                  number_of_questions: quizData.number_of_questions,
+              })
+            : (quizDataToSend = undefined)
 
         const question = currentQuestion || firstQuestion
         const newStates = updatedStates || {
@@ -47,7 +51,8 @@ const sendRecoveryData = async (socket, io) => {
             playerData,
             quizDataToSend,
             question,
-            newStates
+            newStates,
+            quizId
         )
     })
 }

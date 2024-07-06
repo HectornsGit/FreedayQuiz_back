@@ -12,6 +12,7 @@ import { questionState } from './questionState.js'
 import { getQuestionState } from './getQuestionState.js'
 import { conditionalStates } from './conditionalStates.js'
 import { getConditionalStates } from './getConditionalStates.js'
+import setOnlineState from './setOnlineState.js'
 export {
     getQuizData,
     getPlayersData,
@@ -27,4 +28,5 @@ export {
     updateQuestionData,
     questionState,
     conditionalStates,
+    setOnlineState,
 }

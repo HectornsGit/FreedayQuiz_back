@@ -9,6 +9,7 @@ const joinQuizHandler = (socket, io) => {
         // Asigno los datos del jugador al socket, para gestionar luego si está conectado o desconectado:
         socket.data.username = initialPlayerData.name
         socket.data.playerId = initialPlayerData.id
+        socket.data.quizId = quizId
 
         try {
             await saveInitialPlayerData(

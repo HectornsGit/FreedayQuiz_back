@@ -10,60 +10,21 @@ import {
     sendRecoveryData,
     startQuestionHandler,
     showScoresHandler,
+    joinRoomHandler,
+    setOnlineHandler,
+    disconnectHandler,
 } from './handlers/index.js'
-import redisClient from '../redisOperations/redisClient.js'
-import generateError from '../utils/generateError.js'
 
 export default (io) => {
     io.on('connection', async (socket) => {
         //Conexión a la sala:
-        let quizId
-        socket.on('sendQuizId', async (id) => {
-            quizId = id
-            socket.join(quizId)
-            //Se actualiza el número de conectados a la sala:
-            if (quizId) {
-                const clientsNumber =
-                    io.sockets.adapter.rooms.get(quizId)?.size || 0
-                const state = 'connected'
-                io.to(quizId).emit(
-                    'clientsNumber',
-                    clientsNumber,
-                    socket.data,
-                    state
-                )
-                console.log('Jugadores en en la sala:', clientsNumber)
-            }
-        })
-
-        //En caso de reconexión dentro del tiempo especificado, se recuperan los datos: socket.id, socket.rooms y socket.data.
-        if (socket.recovered) {
-            console.log('Reconexión exitosa', socket.id)
-        } else {
-            console.log('Nuevo cliente conectado', socket.id)
-        }
+        joinRoomHandler(socket, io)
 
         //Se une el nuevo cliente en la sala del quiz y se le envían todos los datos necesarios para que los sincronice en su IU, tanto al conectarse como al reconectarse:
         sendRecoveryData(socket, io)
 
-        if (socket) {
-            socket.on('setOnline', (data) => {
-                socket.data.playerId = data.playerId
-                const clientsNumber =
-                    io.sockets.adapter.rooms.get(quizId)?.size || 0
-                if (clientsNumber) {
-                    const state = 'connected'
-                    io.to(quizId).emit(
-                        'clientsNumber',
-                        clientsNumber,
-                        data,
-                        state
-                    )
-
-                    console.log('Jugadores en en la sala:', clientsNumber)
-                }
-            })
-        }
+        //Tras la conexión o recuperación de sesión:
+        setOnlineHandler(socket, io)
 
         //Guardamos el quiz correspondiente con el quizId en Redis:
         getQuizDataHandler(socket, io)
@@ -95,51 +56,6 @@ export default (io) => {
         //Finalizar el quiz, actualizar los datos en MySQL y borrarlos de Redis:
         endQuizHandler(socket, io)
 
-        socket.on('disconnect', async () => {
-            //Se actualiza el número de conectados a la sala:
-            const clientsNumber =
-                io.sockets.adapter.rooms.get(quizId)?.size || 0
-            const state = 'disconnect'
-            console.log(socket.data, quizId)
-            io.to(quizId).emit(
-                'clientsNumber',
-                clientsNumber,
-                socket.data,
-                state
-            )
-            if (socket && socket.data.playerId) {
-                //Actualizamos el estado del jugador que se va, para que cuando alguien recuperar sus datos consta que esté offline:
-                console.log('22', typeof socket.data.playerId)
-                const quizKey = `quiz:${quizId}`
-                try {
-                    const playerData = await redisClient.hGet(
-                        quizKey,
-                        socket.data.playerId
-                    )
-                    console.log('playerdata', playerData)
-                    if (playerData) {
-                        const parsedData = JSON.parse(playerData)
-                        parsedData.state = 'offline'
-                        await redisClient.hSet(
-                            quizKey,
-                            socket.data.playerId,
-                            JSON.stringify(parsedData)
-                        )
-                        console.log('parsed', parsedData)
-                        console.log(
-                            `Updated state for player ${socket.data.playerId} on quiz ${quizId}`
-                        )
-                    } else {
-                        generateError(
-                            `Player data for ${socket.data.playerId} not found in quiz ${quizId}`
-                        )
-                    }
-                } catch (error) {
-                    console.log(error.message)
-                }
-            }
-
-            console.log('Client disconnected', socket.id)
-        })
+        disconnectHandler(socket, io)
     })
 }

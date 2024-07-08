@@ -20,7 +20,7 @@ const setOnlineState = async (quizId, playerId, state) => {
             )
         } else {
             generateError(
-                `Player data for ${playerId} not found in quiz ${quizId}`
+                `SetOnline: Player data for ${playerId} not found in quiz ${quizId}`
             )
         }
     } catch (error) {

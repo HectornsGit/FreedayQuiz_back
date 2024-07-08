@@ -35,8 +35,8 @@ export default function getQuizDataHandler(socket, io) {
                     number_of_questions: updatedData.number_of_questions,
                 }
 
-                if (socket) {
-                    socket.emit(
+                if (socket && loggedUserId == updatedData.ownerId) {
+                    io.to(quizId).emit(
                         'quizData',
                         DataToSend,
                         allPlayers,

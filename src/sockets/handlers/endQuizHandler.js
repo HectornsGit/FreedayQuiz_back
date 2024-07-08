@@ -9,6 +9,9 @@ import { handleSocketErrors } from '../../utils/index.js'
 const endQuizHandler = (socket, io) => {
     socket.on('endQuiz', async (quizId, numberOfQuestions) => {
         try {
+            let dataUpdated = false
+            let dataDeleted = false
+
             //Actualizo los datos de MySQL con los datos de Redis:
 
             //Redis:
@@ -20,19 +23,29 @@ const endQuizHandler = (socket, io) => {
                 socket
             )
 
-            //MysQL:
-            await updateQuiz(currentQuizData)
-            allQuestions.map(async (question) => {
-                return await updateQuestions(question)
-            })
+            // MySQL:
+            if (currentQuizData && allQuestions) {
+                await updateQuiz(currentQuizData)
+                await Promise.all(
+                    allQuestions.map(async (question) => {
+                        return updateQuestions(question)
+                    })
+                )
+                dataUpdated = true
+            }
 
             //Elimino todos los datos en Redis:
-            await deleteAllData(quizId, socket)
+            if (dataUpdated) {
+                await deleteAllData(quizId, socket)
+                dataDeleted = true
+            }
 
             //Emito el evento al front:
-            io.to(quizId).emit('quizEnded', {
-                message: 'Datos guardados en la base de datos',
-            })
+            if (dataDeleted) {
+                io.to(quizId).emit('quizEnded', {
+                    message: 'Datos guardados en la base de datos',
+                })
+            }
         } catch (error) {
             handleSocketErrors(error, socket)
         }

@@ -18,7 +18,7 @@ export async function updatePlayerData(data, socket, currentQuestion) {
             points = calculatePoints(totalTime, timeTaken, playerData.streak)
         } else {
             generateError(
-                `Player data for ${playerId} not found in quiz ${quizId}`
+                `Update: Player data for ${playerId} not found in quiz ${quizId}`
             )
         }
 

@@ -9,7 +9,7 @@ export async function getQuizData(quizId, socket) {
             generateError(`Quiz ${quizId} not found`)
             return null
         }
-
+        console.log(`Get quiz: Data found for quiz ${quizId}`)
         return currentData
     } catch (error) {
         handleSocketErrors(error, socket)

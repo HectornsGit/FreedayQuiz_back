@@ -12,7 +12,7 @@ export async function getQuestionState(quizId, socket) {
             console.log(`Question found for quiz ${quizId}`)
             return JSON.parse(currentQuestion)
         } else {
-            console.log('Pregunta no encontrada')
+            console.log('QuestionState: Pregunta no encontrada')
             return undefined
         }
     } catch (error) {

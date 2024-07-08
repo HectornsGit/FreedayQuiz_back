@@ -1,4 +1,7 @@
-import { saveInitialPlayerData } from '../../redisOperations/redisFunctions/index.js'
+import {
+    getPlayersData,
+    saveInitialPlayerData,
+} from '../../redisOperations/redisFunctions/index.js'
 import { handleSocketErrors } from '../../utils/index.js'
 
 const joinQuizHandler = (socket, io) => {
@@ -6,6 +9,8 @@ const joinQuizHandler = (socket, io) => {
         // Asigno los datos del jugador al socket, para gestionar luego si está conectado o desconectado:
         socket.data.username = initialPlayerData.name
         socket.data.playerId = initialPlayerData.id
+        socket.data.quizId = quizId
+
         try {
             await saveInitialPlayerData(
                 playerId,
@@ -13,8 +18,8 @@ const joinQuizHandler = (socket, io) => {
                 initialPlayerData,
                 socket
             )
-
-            io.to(quizId).emit('playerJoined', initialPlayerData)
+            const allPlayers = await getPlayersData(quizId, socket)
+            if (allPlayers) io.to(quizId).emit('playerJoined', allPlayers)
         } catch (error) {
             handleSocketErrors(error, socket)
         }

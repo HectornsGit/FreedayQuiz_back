@@ -9,6 +9,9 @@ import updateQuestionDataHandler from './updateQuestionDataHandler.js'
 import sendRecoveryData from './sendRecoveryData.js'
 import startQuestionHandler from './startQuestionHandler.js'
 import showScoresHandler from './showScoresHandler.js'
+import joinRoomHandler from './joinRoomHandler.js'
+import setOnlineHandler from './setOnlineHandler.js'
+import disconnectHandler from './disconnectHandler.js'
 
 export {
     getQuizDataHandler,
@@ -22,4 +25,7 @@ export {
     showScoresHandler,
     endQuizHandler,
     sendRecoveryData,
+    joinRoomHandler,
+    setOnlineHandler,
+    disconnectHandler,
 }

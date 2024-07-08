@@ -15,12 +15,21 @@ const startQuestionHandler = (socket, io) => {
         let timeLeft = currentQuestion.questionTime
 
         //Emito el timer y el fin del tiempo:
-        const timerInterval = setInterval(() => {
+        const timerInterval = setInterval(async () => {
             timeLeft -= 1
             io.to(quizId).emit('timerUpdate', timeLeft)
 
             if (timeLeft <= 0) {
                 clearInterval(timerInterval)
+                await conditionalStates(
+                    quizId,
+                    {
+                        isQuestionRunning: true,
+                        showScores: false,
+                        isDisabled: true,
+                    },
+                    socket
+                )
                 io.to(quizId).emit('timeUp')
             }
         }, 1000)

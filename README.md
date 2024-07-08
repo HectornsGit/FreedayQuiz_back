@@ -1,6 +1,7 @@
 # FreedayQuiz_back
 
-API to make quiz games online developed in NodeJS
+API desarrollada con NodeJs, Express, Joi, MySQL, Multer, Socket.io, Redis y otras dependencias.
+Creación, edición y ejecución de quizzes con sistema de qr y código para acceso de los jugadores, que no necesitarán registro.
 
 # # Scripts:
 
@@ -74,7 +75,17 @@ Ejemplo:
 "questionIds": [28, 34, 36]
 }
 
-Systema de conexiones/desconexiones:
+Conexión y desconexión:
+
+Systema de conexiones/desconexiones del cliente al servidor (sin acción por parte del cliente, sino por caída de su red de internet):
 Si un cliente se desconecta, el sistema tratará de reconectarse automáticamente.
 Si se conecta antes de los dos minutos, todos sus datos se sincronizarán con los actuales del quiz, incluyendo el timer de las preguntas, y se le redirigirá a la pantalla activa.
 Si un cliente llega tarde y el quiz ya ha comenzado, tras poner su nombre de usuario se sincronizarán todos los datos y se le redirigirá a la pantalla activa.
+
+Systema de conexiones/desconexiones del cliente al salir de la página o refrescarla con F5:
+Master:
+La pregunta en curso seguirá ejecutándose para el resto de jugadores, y se seguirán guardando los datos de las puntuaciones en el servidor.
+Al volver, el master recuperará automáticamente todos los datos y el estado en que quedó el quiz y podrá activar la siguiente pregunta o mostrar las puntuaciones.
+Jugador:
+Al volver, se le dará la opción de recuperar su sesión o crear un nuevo jugador.
+En caso de que se quiera recuperar, se le sincronizarán de nuevo todos sus datos, de jugador y quiz, y estado actual del quiz, para que pueda seguir jugando con su nombre de usuario e id inicales en la pregunta activa en ese momento.

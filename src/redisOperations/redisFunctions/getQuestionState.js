@@ -13,7 +13,7 @@ export async function getQuestionState(quizId, socket) {
             return JSON.parse(currentQuestion)
         } else {
             console.log('Pregunta no encontrada')
-            return null
+            return undefined
         }
     } catch (error) {
         handleSocketErrors(error, socket)

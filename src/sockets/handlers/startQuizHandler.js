@@ -14,12 +14,16 @@ const startQuizHandler = (socket, io) => {
                 firstQuestionNumber,
                 socket
             )
+            if (firstQuestion) {
+                //Emitir la primera pregunta a la sala correspondiente
+                io.to(quizId).emit('question', firstQuestion)
 
-            //Emitir la primera pregunta a la sala correspondiente
-            io.to(quizId).emit('question', firstQuestion)
-
-            //Guardar la pregunta en el estado question:
-            await questionState(quizId, firstQuestion, socket)
+                //Guardar la pregunta en el estado question:
+                await questionState(quizId, firstQuestion, socket)
+            } else {
+                socket.emit('noMoreQuestions', () => {})
+                console.log('No hay más preguntas')
+            }
         } catch (error) {
             handleSocketErrors(error, socket)
         }

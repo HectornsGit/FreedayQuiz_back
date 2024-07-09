@@ -1,4 +1,4 @@
-import { handleSocketErrors, generateError } from '../../utils/index.js'
+import { handleSocketErrors } from '../../utils/index.js'
 import redisClient from '../redisClient.js'
 
 export async function getQuestionByQuestionNumber(

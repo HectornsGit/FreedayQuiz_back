@@ -13,6 +13,7 @@ import {
     joinRoomHandler,
     setOnlineHandler,
     disconnectHandler,
+    startQuizSession,
 } from './handlers/index.js'
 
 export default (io) => {
@@ -28,6 +29,9 @@ export default (io) => {
 
         //Guardamos el quiz correspondiente con el quizId en Redis:
         getQuizDataHandler(socket, io)
+
+        //Se establece el tiempo máximo de la sessión:
+        startQuizSession(socket, io)
 
         //El jugador pone su nickname y se une al quiz. Sus datos se guardan en Redis
         joinQuizHandler(socket, io)

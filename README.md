@@ -56,7 +56,7 @@ description,
 
 patch /update-question/:quiz_id/:question_number para editar una pregunta de un quiz:
 Todos los campos son opcionales.
-\*question_number no se podrá cambiar.
+question_number no se podrá cambiar.
 question,
 question_time,
 optionA,
@@ -75,17 +75,24 @@ Ejemplo:
 "questionIds": [28, 34, 36]
 }
 
-Conexión y desconexión:
+# # Conexión y desconexión:
 
-Systema de conexiones/desconexiones del cliente al servidor (sin acción por parte del cliente, sino por caída de su red de internet):
+# # # Systema de conexiones/desconexiones del cliente al servidor (sin acción por parte del cliente, sino por caída de su red de internet):
+
 Si un cliente se desconecta, el sistema tratará de reconectarse automáticamente.
 Si se conecta antes de los dos minutos, todos sus datos se sincronizarán con los actuales del quiz, incluyendo el timer de las preguntas, y se le redirigirá a la pantalla activa.
 Si un cliente llega tarde y el quiz ya ha comenzado, tras poner su nombre de usuario se sincronizarán todos los datos y se le redirigirá a la pantalla activa.
 
-Systema de conexiones/desconexiones del cliente al salir de la página o refrescarla con F5:
+# # # Systema de conexiones/desconexiones del cliente al salir de la página o refrescarla con F5:
+
 Master:
 La pregunta en curso seguirá ejecutándose para el resto de jugadores, y se seguirán guardando los datos de las puntuaciones en el servidor.
-Al volver, el master recuperará automáticamente todos los datos y el estado en que quedó el quiz y podrá activar la siguiente pregunta o mostrar las puntuaciones.
+Al volver, el master recuperará automáticamente todos los datos actualizados y el estado en que quedó el quiz y podrá activar la siguiente pregunta o mostrar las puntuaciones.
 Jugador:
 Al volver, se le dará la opción de recuperar su sesión o crear un nuevo jugador.
 En caso de que se quiera recuperar, se le sincronizarán de nuevo todos sus datos, de jugador y quiz, y estado actual del quiz, para que pueda seguir jugando con su nombre de usuario e id inicales en la pregunta activa en ese momento.
+
+# # Control de sesiones:
+
+Al iniciar, el master establecerá el tiempo máximo de duración de la sesión, asegurándose de que, pasado ese tiempo, todos los datos sean salvados en la base de datos relacional y posteriormente borrados del servidor Redis, dejando así de ser accesibles. Los usuarios serán redirigidos a la pantalla de inicio.
+Eso previene que, por motivos de conexión a internet o cierre accidental de las pestañas, el master no pueda cerrar la sesión manualmente.

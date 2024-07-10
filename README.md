@@ -3,6 +3,25 @@
 API desarrollada con NodeJs, Express, Joi, MySQL, Multer, Socket.io, Redis y otras dependencias.
 Creación, edición y ejecución de quizzes con sistema de qr y código para acceso de los jugadores, que no necesitarán registro.
 
+# # Un usuario puede:
+
+1.Registrarse.
+2.Editar o borrar sus datos.
+3.Crear, editar o borrar sus quizzes.
+4.Crear, editar o borrar preguntas y editar respuestas.
+5.Invitar a usuarios compartiendo un código de acceso o código QR.
+6.Ejecutar quizzes.
+
+# # Antes o durante el tiempo de ejecución del quiz:
+
+El master podrá, en tiempo real:
+1.Seleccionar la pregunta a iniciar, en el órden que quiera.
+2.Repetir preguntas, si así lo desea.
+3.Editar los datos del quiz, que serán actualizados para todos los jugadores.
+4.Editar los datos de cualquier pregunta y sus respuestas, incluyendo el tiempo máximo, que serán actualizados inmediatamente para todos los jugadores.
+5.Borrar preguntas.
+6.Mostrar a los jugadores todas las puntuaciones hasta el momento, o puntuaciones finales.
+
 # # Scripts:
 
 node --run dev para iniciar el proyecto en modo desarrollo.
@@ -14,19 +33,15 @@ node --run dropDb para borrar la base de datos y las tablas
 # # Endpoints:
 
 post /register para registrar un usuario.
-
 Campos necesarios: name, email, password
 
 post /login para acceder al sistema.
-
 Campos necesarios: email, password
 
 post /create-quiz para crear un quiz
-
 Campos necesarios: title, description. En la respuesta del back se envía el código QR para unirse a la partida.
 
 post /create-questions para crear preguntas y añadirlas a un quiz
-
 Campos necesarios:  
  quiz_id,
 question,
@@ -56,7 +71,6 @@ description,
 
 patch /update-question/:quiz_id/:question_number para editar una pregunta de un quiz:
 Todos los campos son opcionales.
-question_number no se podrá cambiar.
 question,
 question_time,
 optionA,
@@ -74,6 +88,7 @@ Ejemplo:
 {"quizId": "1",
 "questionIds": [28, 34, 36]
 }
+Tras la eliminación, los números de pregunta (question_number) se reorganizarán automáticamente para que sigan siendo consecutivos y empiezen desde el número 1
 
 # # Conexión y desconexión:
 

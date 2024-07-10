@@ -1,4 +1,8 @@
-import { updateQuestions, updateQuiz } from '../models/quiz/index.js'
+import {
+    updateQuestions,
+    updateQuiz,
+    deleteQuestion,
+} from '../models/quiz/index.js'
 import {
     deleteAllData,
     getAllQuestions,
@@ -6,7 +10,12 @@ import {
 } from '../redisOperations/redisFunctions/index.js'
 import handleSocketErrors from './handleSocketErrors.js'
 
-const endQuizUtil = async (quizId, socket, numberOfQuestions) => {
+const endQuizUtil = async (
+    quizId,
+    socket,
+    numberOfQuestions,
+    questionsToDelete
+) => {
     try {
         let dataUpdated = false
         let dataDeleted = false
@@ -37,6 +46,7 @@ const endQuizUtil = async (quizId, socket, numberOfQuestions) => {
         if (dataUpdated) {
             await deleteAllData(quizId, socket)
             dataDeleted = true
+            await deleteQuestion(questionsToDelete, quizId)
         }
         return dataDeleted
     } catch (error) {

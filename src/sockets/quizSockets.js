@@ -14,6 +14,7 @@ import {
     setOnlineHandler,
     disconnectHandler,
     startQuizSession,
+    deleteQuestionHandler,
 } from './handlers/index.js'
 
 export default (io) => {
@@ -39,10 +40,10 @@ export default (io) => {
         //Iniciar la pregunta actual para los jugadores:
         startQuestionHandler(socket, io)
 
-        //El master trae la primera pregunta a su IU. Tras eitarla, o no, se guardan los datos del quiz en Redis y se envía la primera pregunta al cliente, para que esté actualizada en sus estados.
+        //El master trae la primera pregunta a su IU. Tras editarla, o no, se guardan los datos del quiz en Redis y se envía la primera pregunta al cliente, para que esté actualizada en sus estados.
         startQuizHandler(socket, io)
 
-        //Se escucha la respuesta del jugador y se compara con la respuesta correcta y se actualizan los datos para enviárselos al front:
+        //Se escucha la respuesta del jugador, se compara con la respuesta correcta y se actualizan los datos para enviárselos al front:
         submitAnswerHandler(socket, io)
 
         //Se envía la siguiente pregunta y se actualiza el estado question:
@@ -56,6 +57,9 @@ export default (io) => {
 
         //Se actualizan los datos de la pregunta en Redis:
         updateQuestionDataHandler(socket, io)
+
+        //Para borrar en tiempo real una pregunta de Redis:
+        deleteQuestionHandler(socket, io)
 
         //Finalizar el quiz, actualizar los datos en MySQL y borrarlos de Redis:
         endQuizHandler(socket, io)

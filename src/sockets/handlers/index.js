@@ -13,6 +13,7 @@ import joinRoomHandler from './joinRoomHandler.js'
 import setOnlineHandler from './setOnlineHandler.js'
 import disconnectHandler from './disconnectHandler.js'
 import startQuizSession from './startQuizSession.js'
+import deleteQuestionHandler from './deleteQuestionHandler.js'
 
 export {
     getQuizDataHandler,
@@ -30,4 +31,5 @@ export {
     setOnlineHandler,
     disconnectHandler,
     startQuizSession,
+    deleteQuestionHandler,
 }

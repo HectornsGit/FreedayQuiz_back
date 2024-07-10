@@ -13,6 +13,7 @@ import { getQuestionState } from './getQuestionState.js'
 import { conditionalStates } from './conditionalStates.js'
 import { getConditionalStates } from './getConditionalStates.js'
 import setOnlineState from './setOnlineState.js'
+import deleteQuestion from './deleteQuestion.js'
 
 export {
     getQuizData,
@@ -28,6 +29,7 @@ export {
     updateQuizData,
     updateQuestionData,
     questionState,
+    deleteQuestion,
     conditionalStates,
     setOnlineState,
 }

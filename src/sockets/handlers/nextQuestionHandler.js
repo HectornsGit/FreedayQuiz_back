@@ -7,14 +7,16 @@ import { handleSocketErrors } from '../../utils/index.js'
 const nextQuestionHandler = (socket, io) => {
     socket.on(
         'nextQuestion',
-        async (quizId, questionNumber, numberOfQuestions) => {
+        async (quizId, questionNumber, numberOfQuestions, direction) => {
             try {
-                if (questionNumber <= numberOfQuestions) {
-                    const question = await getQuestionByQuestionNumber(
-                        quizId,
-                        questionNumber,
-                        socket
-                    )
+                const question = await getQuestionByQuestionNumber(
+                    quizId,
+                    questionNumber,
+                    socket,
+                    numberOfQuestions,
+                    direction
+                )
+                if (question) {
                     io.to(quizId).emit('question', question)
 
                     //Se actualiza el estado question:

@@ -16,7 +16,15 @@ const submitAnswerHandler = (socket, io) => {
             let playerData = {}
             playerData = await updatePlayerData(data, socket, currentQuestion)
 
+            //Emito el resultado a todos los usuarios de la sala:
             io.to(data.quizId).emit('answerSubmitted', playerData)
+
+            //Emito la notificación solo al usuario que ha respondido:
+            socket.emit(
+                'answerSubmittedMessage',
+                playerData.lastAnswerText,
+                playerData.lastAnswer
+            )
         } catch (error) {
             handleSocketErrors(error, socket)
         }

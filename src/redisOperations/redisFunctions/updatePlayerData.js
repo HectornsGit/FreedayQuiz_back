@@ -26,6 +26,7 @@ export async function updatePlayerData(data, socket, currentQuestion) {
             parsedData.totalScore += points
             parsedData.streak++
             parsedData.lastCorrectAnswer = points
+            parsedData.lastAnswer = 'correct'
 
             await redisClient.hSet(
                 quizKey,
@@ -39,6 +40,7 @@ export async function updatePlayerData(data, socket, currentQuestion) {
         } else {
             parsedData.streak = 0
             parsedData.lastCorrectAnswer = 0
+            parsedData.lastAnswer = 'failed'
             await redisClient.hSet(
                 quizKey,
                 playerId,

@@ -22,7 +22,7 @@ const nextQuestionHandler = (socket, io) => {
                     //Se actualiza el estado question:
                     await questionState(quizId, question, socket)
                 } else {
-                    io.to(quizId).emit('noMoreQuestions', () => {})
+                    socket.emit('noMoreQuestions', () => {})
                     console.log('No hay más preguntas')
                 }
             } catch (error) {

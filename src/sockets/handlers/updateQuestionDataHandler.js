@@ -4,12 +4,16 @@ import { handleSocketErrors } from '../../utils/index.js'
 const updateQuestionDataHandler = (socket, io) => {
     try {
         socket.on('updateQuestionData', async (quizId, questionData) => {
+            let dataUpdated
+
             // Actualizo datos de la pregunta en Redis:
-            const dataUpdated = await updateQuestionData(
-                questionData,
-                quizId,
-                socket
-            )
+            if (questionData) {
+                dataUpdated = await updateQuestionData(
+                    questionData,
+                    quizId,
+                    socket
+                )
+            }
 
             if (dataUpdated) {
                 io.to(quizId).emit('questionUpdatedMessage', {
@@ -17,8 +21,9 @@ const updateQuestionDataHandler = (socket, io) => {
                     status: 'ok',
                     questionUpdated: questionData,
                 })
-            } else {
-                io.to(quizId).emit('questionUpdatedMessage', {
+            }
+            if (dataUpdated === null) {
+                socket.emit('questionUpdatedMessage', {
                     message: 'No se pudieron actualizar los datos',
                     status: 'error',
                 })

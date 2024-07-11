@@ -46,7 +46,9 @@ const endQuizUtil = async (
         if (dataUpdated) {
             await deleteAllData(quizId, socket)
             dataDeleted = true
-            await deleteQuestion(questionsToDelete, quizId)
+            if (questionsToDelete.length > 0) {
+                await deleteQuestion(questionsToDelete, quizId)
+            }
         }
         return dataDeleted
     } catch (error) {

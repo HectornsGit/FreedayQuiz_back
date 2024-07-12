@@ -14,6 +14,8 @@ import { conditionalStates } from './conditionalStates.js'
 import { getConditionalStates } from './getConditionalStates.js'
 import setOnlineState from './setOnlineState.js'
 import deleteQuestion from './deleteQuestion.js'
+import clickedResponses from './clickedResponses.js'
+import { getClickedResponses } from './getClickedResponses.js'
 
 export {
     getQuizData,
@@ -32,4 +34,6 @@ export {
     deleteQuestion,
     conditionalStates,
     setOnlineState,
+    clickedResponses,
+    getClickedResponses,
 }

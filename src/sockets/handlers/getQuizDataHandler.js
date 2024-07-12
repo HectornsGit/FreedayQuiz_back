@@ -34,7 +34,7 @@ export default function getQuizDataHandler(socket, io) {
                     owner_id: updatedData.ownerId,
                     number_of_questions: updatedData.number_of_questions,
                 }
-
+                console.log('log44', loggedUserId)
                 if (socket && loggedUserId == updatedData.ownerId) {
                     io.to(quizId).emit(
                         'quizData',

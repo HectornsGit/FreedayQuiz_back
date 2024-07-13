@@ -1,17 +1,19 @@
-import pool from './getPool.js';
-import useDb from './useDb.js';
+import pool from './getPool.js'
+import useDb from './useDb.js'
 
 const createDb = async () => {
-  try {
-    await pool.query(`CREATE DATABASE IF NOT EXISTS ${process.env.NAME_DB};`);
+    try {
+        await pool.query(
+            `CREATE DATABASE IF NOT EXISTS ${process.env.NAME_DB};`
+        )
 
-    await useDb();
+        await useDb()
 
-    await pool.query('SET FOREIGN_KEY_CHECKS = 0;');
+        await pool.query('SET FOREIGN_KEY_CHECKS = 0;')
 
-    await pool.query(`DROP TABLE IF EXISTS users;`);
+        await pool.query(`DROP TABLE IF EXISTS users;`)
 
-    await pool.query(`
+        await pool.query(`
             CREATE TABLE users (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 name VARCHAR(64)NOT NULL,
@@ -20,13 +22,13 @@ const createDb = async () => {
                 avatar VARCHAR(255),
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP
-            );`);
+            );`)
 
-    await pool.query(`DROP TABLE IF EXISTS quizzes;`);
+        await pool.query(`DROP TABLE IF EXISTS quizzes;`)
 
-    await pool.query(`
+        await pool.query(`
             CREATE TABLE quizzes (
-                id INT AUTO_INCREMENT PRIMARY KEY,
+                id CHAR(36) PRIMARY KEY,
                 title VARCHAR(40) NOT NULL,
                 description TEXT,
                 owner_id INT NOT NULL,
@@ -34,14 +36,14 @@ const createDb = async () => {
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP,
                 FOREIGN KEY (owner_id) REFERENCES users(id)
-            );`);
+            );`)
 
-    await pool.query(`DROP TABLE IF EXISTS questions;`);
+        await pool.query(`DROP TABLE IF EXISTS questions;`)
 
-    await pool.query(`
+        await pool.query(`
             CREATE TABLE questions (
                 id INT AUTO_INCREMENT PRIMARY KEY,
-                quiz_id INT NOT NULL,
+                quiz_id CHAR(36) NOT NULL,
                 question VARCHAR(60) NOT NULL,
                 question_time INT NOT NULL,
                 optionA VARCHAR(60) NOT NULL,
@@ -53,14 +55,25 @@ const createDb = async () => {
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
                 modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP,
                 FOREIGN KEY (quiz_id) REFERENCES quizzes(id)
-            );`);
+            );`)
 
-    await pool.query('SET FOREIGN_KEY_CHECKS = 1;');
+        // Esto es un trigger para generar UUID en los ids de la tabla quizzes
+        await pool.query(`DROP TRIGGER IF EXISTS before_insert_quizzes;`)
+        await pool.query(`
+            CREATE TRIGGER before_insert_quizzes
+            BEFORE INSERT ON quizzes
+            FOR EACH ROW
+            BEGIN
+                SET NEW.id = UUID();
+            END;
+        `)
 
-    console.log('Tablas de base de datos creada exitosamente');
-  } catch (error) {
-    throw error;
-  }
-};
+        await pool.query('SET FOREIGN_KEY_CHECKS = 1;')
 
-createDb();
+        console.log('Tablas de base de datos creada exitosamente')
+    } catch (error) {
+        throw error
+    }
+}
+
+createDb()

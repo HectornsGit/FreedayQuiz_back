@@ -1,4 +1,5 @@
 import {
+    getClickedResponses,
     getConditionalStates,
     getPlayersData,
     getQuestionByQuestionNumber,
@@ -16,6 +17,7 @@ const sendRecoveryData = async (socket, io) => {
         const quizData = await getQuizData(quizId, socket)
         const currentQuestion = await getQuestionState(quizId, socket)
         const updatedStates = await getConditionalStates(quizId)
+        const clickedResponses = await getClickedResponses(quizId)
 
         //Si no existe currentQuestion, se envía la pregunta número 1 al estado:
         let firstQuestion
@@ -52,7 +54,8 @@ const sendRecoveryData = async (socket, io) => {
             quizDataToSend,
             question,
             newStates,
-            quizId
+            quizId,
+            clickedResponses
         )
     })
 }

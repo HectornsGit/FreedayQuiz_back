@@ -5,8 +5,7 @@ import {
 import { handleSocketErrors } from '../../utils/index.js'
 
 const startQuizHandler = (socket, io) => {
-    socket.on('startQuiz', async (id) => {
-        const quizId = id.toString()
+    socket.on('startQuiz', async (_loggedUserId, quizId) => {
         try {
             const firstQuestionNumber = 1
             const firstQuestion = await getQuestionByQuestionNumber(

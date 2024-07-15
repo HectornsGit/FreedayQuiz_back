@@ -16,24 +16,28 @@ import setOnlineState from './setOnlineState.js'
 import deleteQuestion from './deleteQuestion.js'
 import clickedResponses from './clickedResponses.js'
 import { getClickedResponses } from './getClickedResponses.js'
+import { masterState } from './masterState.js'
+import { getMasterState } from './getMasterState.js'
 
 export {
+    storeQuizDataInRedis,
+    saveInitialPlayerData,
     getQuizData,
     getPlayersData,
-    deleteAllData,
     getQuestionState,
     getConditionalStates,
-    storeQuizDataInRedis,
+    getMasterState,
+    getClickedResponses,
     getQuestionByQuestionNumber,
     getAllQuestions,
-    saveInitialPlayerData,
     updatePlayerData,
     updateQuizData,
     updateQuestionData,
-    questionState,
     deleteQuestion,
+    deleteAllData,
+    questionState,
     conditionalStates,
     setOnlineState,
+    masterState,
     clickedResponses,
-    getClickedResponses,
 }

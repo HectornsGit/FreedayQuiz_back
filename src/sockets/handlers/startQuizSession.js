@@ -4,6 +4,10 @@ const quizTimers = {}
 
 const startQuizSession = (socket, io) => {
     socket.on('startSession', (duration, quizId, numberOfQuestions) => {
+        //Cierro los intervalos que puediesen estar ya abiertos:
+        clearInterval(quizTimers[quizId]?.timer)
+        clearInterval(quizTimers[quizId]?.timeLeft)
+
         const timeInMiliseconds = duration * 60 * 1000
         let timeInSeconds = duration * 60
 

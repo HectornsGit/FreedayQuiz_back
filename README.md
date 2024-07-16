@@ -111,3 +111,7 @@ En caso de que se quiera recuperar, se le sincronizarán de nuevo todos sus dato
 
 Al iniciar, el master establecerá el tiempo máximo de duración de la sesión, asegurándose de que, pasado ese tiempo, todos los datos sean salvados en la base de datos relacional y posteriormente borrados del servidor Redis, dejando así de ser accesibles. Los usuarios serán redirigidos a la pantalla de inicio.
 Eso previene que, por motivos de conexión a internet o cierre accidental de las pestañas, el master no pueda cerrar la sesión manualmente.
+
+# # Sitema de borrado de los datos obsoletos fuera de línea:
+
+Para sincronizar datos y recuperar sesiones se usará el almacenamiento local (localstorage) para las claves. Todo será borrado cuando el tiempo de sesión establecido por el master del quiz llegue a cero, o cuando este presione el botón: Finalizar sesión. Sin emgargo, si esto ocurre cuando un usuario ya no está en línea, los datos persistirán en su navegador. Por ello, se ha implementado un sistema de borrado de los datos del localstorage basado en un tiempo de expiración de 12 horas. Cuando se intente acceder a estos datos, el sistema detectará que están obsoletos y los borrará, puediendo así almacenar los nuevos sin crear conflictos.

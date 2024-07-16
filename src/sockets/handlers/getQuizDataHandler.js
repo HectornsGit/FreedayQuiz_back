@@ -34,6 +34,9 @@ export default function getQuizDataHandler(socket, io) {
                     id: updatedData.id,
                     owner_id: updatedData.ownerId,
                     number_of_questions: updatedData.number_of_questions,
+                    list_of_questions: JSON.parse(
+                        updatedData.list_of_questions
+                    ),
                 }
 
                 if (socket && loggedUserId == updatedData.ownerId) {

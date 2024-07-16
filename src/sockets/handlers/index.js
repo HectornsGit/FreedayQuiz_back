@@ -14,6 +14,7 @@ import setOnlineHandler from './setOnlineHandler.js'
 import disconnectHandler from './disconnectHandler.js'
 import startQuizSession from './startQuizSession.js'
 import deleteQuestionHandler from './deleteQuestionHandler.js'
+import sendResult from './sendResult.js'
 
 export {
     getQuizDataHandler,
@@ -32,4 +33,5 @@ export {
     disconnectHandler,
     startQuizSession,
     deleteQuestionHandler,
+    sendResult,
 }

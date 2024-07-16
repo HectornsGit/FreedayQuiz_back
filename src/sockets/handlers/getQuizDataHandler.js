@@ -4,6 +4,7 @@ import {
     getQuizData,
     getQuestionState,
     storeQuizDataInRedis,
+    masterState,
 } from '../../redisOperations/redisFunctions/index.js'
 import { handleSocketErrors } from '../../utils/index.js'
 
@@ -34,8 +35,9 @@ export default function getQuizDataHandler(socket, io) {
                     owner_id: updatedData.ownerId,
                     number_of_questions: updatedData.number_of_questions,
                 }
-                console.log('log44', loggedUserId)
+
                 if (socket && loggedUserId == updatedData.ownerId) {
+                    await masterState(quizId, { state: true }, socket)
                     io.to(quizId).emit(
                         'quizData',
                         DataToSend,

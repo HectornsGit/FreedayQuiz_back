@@ -3,7 +3,7 @@
 API desarrollada con NodeJs, Express, Joi, MySQL, Multer, Socket.io, Redis y otras dependencias.
 Creación, edición y ejecución de quizzes con sistema de qr y código para acceso de los jugadores, que no necesitarán registro.
 
-# # Un usuario puede:
+# Un usuario puede:
 
 1.Registrarse.
 2.Editar o borrar sus datos.
@@ -12,7 +12,7 @@ Creación, edición y ejecución de quizzes con sistema de qr y código para acc
 5.Invitar a usuarios compartiendo un código de acceso o código QR.
 6.Ejecutar quizzes.
 
-# # Antes o durante el tiempo de ejecución del quiz:
+# Antes o durante el tiempo de ejecución del quiz:
 
 El master podrá, en tiempo real:
 1.Seleccionar la pregunta a iniciar, en el órden que quiera.
@@ -22,7 +22,7 @@ El master podrá, en tiempo real:
 5.Borrar preguntas.
 6.Mostrar a los jugadores todas las puntuaciones hasta el momento, o puntuaciones finales.
 
-# # Scripts:
+# Scripts:
 
 node --run dev para iniciar el proyecto en modo desarrollo.
 
@@ -30,7 +30,7 @@ node --run initDb para crear base de datos y tablas.
 
 node --run dropDb para borrar la base de datos y las tablas
 
-# # Endpoints:
+# Endpoints:
 
 post /register para registrar un usuario.
 Campos necesarios: name, email, password
@@ -90,15 +90,15 @@ Ejemplo:
 }
 Tras la eliminación, los números de pregunta (question_number) se reorganizarán automáticamente para que sigan siendo consecutivos y empiezen desde el número 1
 
-# # Conexión y desconexión:
+# Conexión y desconexión:
 
-# # # Systema de conexiones/desconexiones del cliente al servidor (sin acción por parte del cliente, sino por caída de su red de internet):
+# Sistema de conexiones/desconexiones del cliente al servidor (sin acción por parte del cliente, sino por caída de su red de internet):
 
 Si un cliente se desconecta, el sistema tratará de reconectarse automáticamente.
 Si se conecta antes de los dos minutos, todos sus datos se sincronizarán con los actuales del quiz, incluyendo el timer de las preguntas, y se le redirigirá a la pantalla activa.
 Si un cliente llega tarde y el quiz ya ha comenzado, tras poner su nombre de usuario se sincronizarán todos los datos y se le redirigirá a la pantalla activa.
 
-# # # Systema de conexiones/desconexiones del cliente al salir de la página o refrescarla con F5:
+# Sistema de conexiones/desconexiones del cliente al salir de la página o refrescarla con F5:
 
 Master:
 La pregunta en curso seguirá ejecutándose para el resto de jugadores, y se seguirán guardando los datos de las puntuaciones en el servidor.
@@ -107,11 +107,11 @@ Jugador:
 Al volver, se le dará la opción de recuperar su sesión o crear un nuevo jugador.
 En caso de que se quiera recuperar, se le sincronizarán de nuevo todos sus datos, de jugador y quiz, y estado actual del quiz, para que pueda seguir jugando con su nombre de usuario e id inicales en la pregunta activa en ese momento.
 
-# # Control de sesiones:
+# Control de sesiones:
 
 Al iniciar, el master establecerá el tiempo máximo de duración de la sesión, asegurándose de que, pasado ese tiempo, todos los datos sean salvados en la base de datos relacional y posteriormente borrados del servidor Redis, dejando así de ser accesibles. Los usuarios serán redirigidos a la pantalla de inicio.
 Eso previene que, por motivos de conexión a internet o cierre accidental de las pestañas, el master no pueda cerrar la sesión manualmente.
 
-# # Sitema de borrado de los datos obsoletos fuera de línea:
+# Sitema de borrado de los datos obsoletos fuera de línea:
 
 Para sincronizar datos y recuperar sesiones se usará el almacenamiento local (localstorage) para las claves. Todo será borrado cuando el tiempo de sesión establecido por el master del quiz llegue a cero, o cuando este presione el botón: Finalizar sesión. Sin emgargo, si esto ocurre cuando un usuario ya no está en línea, los datos persistirán en su navegador. Por ello, se ha implementado un sistema de borrado de los datos del localstorage basado en un tiempo de expiración de 12 horas. Cuando se intente acceder a estos datos, el sistema detectará que están obsoletos y los borrará, puediendo así almacenar los nuevos sin crear conflictos.

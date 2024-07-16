@@ -15,6 +15,7 @@ import {
     disconnectHandler,
     startQuizSession,
     deleteQuestionHandler,
+    sendResult,
 } from './handlers/index.js'
 
 export default (io) => {
@@ -51,6 +52,9 @@ export default (io) => {
 
         //Se envía el evento para activar las puntuaciones en todos los clientes de la sala:
         showScoresHandler(socket, io)
+
+        //Para enviar el número de respuestas a cada botón:
+        sendResult(socket, io)
 
         //Se actualizan los datos del quiz en Redis:
         updateQuizDataHandler(socket, io)

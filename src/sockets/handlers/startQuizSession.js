@@ -1,5 +1,3 @@
-import { endQuizUtil } from '../../utils/index.js'
-
 const quizTimers = {}
 
 const startQuizSession = (socket, io) => {
@@ -19,12 +17,9 @@ const startQuizSession = (socket, io) => {
 
         //Establecer fin de sesión:
         const timer = setTimeout(() => {
-            const ready = endQuizUtil(quizId, socket, numberOfQuestions)
-            if (ready) {
-                io.to(quizId).emit('quizEnded', { message: 'Sesión expirada' })
-                clearInterval(timer)
-                clearInterval(timeLeft)
-            }
+            io.to(quizId).emit('quizEnded', { message: 'Sesión expirada' })
+            clearInterval(timer)
+            clearInterval(timeLeft)
         }, timeInMiliseconds)
 
         //Aquí guardo los intervalos para cerrarlos desde el evento de abajo:

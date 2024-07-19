@@ -15,12 +15,13 @@ Creación, edición y ejecución de quizzes con sistema de qr y código para acc
 # Antes o durante el tiempo de ejecución del quiz:
 
 El master podrá, en tiempo real:
-1.Seleccionar la pregunta a iniciar, en el órden que quiera.
-2.Repetir preguntas, si así lo desea.
-3.Editar los datos del quiz, que serán actualizados para todos los jugadores.
-4.Editar los datos de cualquier pregunta y sus respuestas, incluyendo el tiempo máximo, que serán actualizados inmediatamente para todos los jugadores.
-5.Borrar preguntas.
-6.Mostrar a los jugadores todas las puntuaciones hasta el momento, o puntuaciones finales.
+1.Seleccionar la pregunta a iniciar, en el órden que quiera,tanto con botones (next or previous question) como con un menú desplegable que le mostrará todos los títulos.
+2.Repetir preguntas, si así lo desea, aunque el sistema le alertará de ello.
+3.Iniciar preguntas aleatorias, quedando excluidas las ya ejecutadas. Cuando no queden más, se le dará la opción de ejecutar una repetida.
+4.Editar los datos del quiz, que serán actualizados para todos los jugadores.
+5.Editar los datos de cualquier pregunta y sus respuestas, incluyendo el tiempo máximo, que serán actualizados inmediatamente para todos los jugadores.
+6.Borrar preguntas.
+7.Mostrar a los jugadores todas las puntuaciones hasta el momento, o puntuaciones finales.
 
 # Scripts:
 
@@ -115,3 +116,9 @@ Eso previene que, por motivos de conexión a internet o cierre accidental de las
 # Sitema de borrado de los datos obsoletos fuera de línea:
 
 Para sincronizar datos y recuperar sesiones se usará el almacenamiento local (localstorage) para las claves. Todo será borrado cuando el tiempo de sesión establecido por el master del quiz llegue a cero, o cuando este presione el botón: Finalizar sesión. Sin emgargo, si esto ocurre cuando un usuario ya no está en línea, los datos persistirán en su navegador. Por ello, se ha implementado un sistema de borrado de los datos del localstorage basado en un tiempo de expiración de 12 horas. Cuando se intente acceder a estos datos, el sistema detectará que están obsoletos y los borrará, puediendo así almacenar los nuevos sin crear conflictos.
+
+---
+
+Apunte para mantenimiento: Los datos de los jugadores se sincronizan en el archivo: sendRecoveryData. Los datos del master, en getQuizDataHandler.
+
+---

@@ -1,7 +1,7 @@
 const quizTimers = {}
 
 const startQuizSession = (socket, io) => {
-    socket.on('startSession', (duration, quizId, numberOfQuestions) => {
+    socket.on('startSession', (duration, quizId) => {
         //Cierro los intervalos que puediesen estar ya abiertos:
         clearInterval(quizTimers[quizId]?.timer)
         clearInterval(quizTimers[quizId]?.timeLeft)
@@ -33,6 +33,16 @@ const startQuizSession = (socket, io) => {
             delete quizTimers[quizId]
             console.log('Intervalos finalizados')
         }
+    })
+
+    socket.on('restartSessionTime', (quizId) => {
+        if (quizTimers[quizId]?.timer || quizTimers[quizId]?.timeLeft) {
+            return
+        } else
+            console.log(
+                'Enviando restauración de tiempo de sesión tras caída de servidor'
+            )
+        socket.emit('needToRestartSession')
     })
 }
 export default startQuizSession

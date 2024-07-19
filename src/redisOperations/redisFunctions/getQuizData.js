@@ -5,8 +5,8 @@ export async function getQuizData(quizId, socket) {
     const quizKey = `quiz:${quizId}`
     try {
         const currentData = await redisClient.hGetAll(quizKey)
-        if (!currentData) {
-            generateError(`Quiz ${quizId} not found`)
+        if (Object.keys(currentData).length <= 0) {
+            console.log(`Quiz ${quizId} not found`)
             return null
         }
         console.log(`Get quiz: Data found for quiz ${quizId}`)

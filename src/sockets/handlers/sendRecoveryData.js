@@ -11,7 +11,6 @@ const sendRecoveryData = async (socket, io) => {
     socket.on('requestRecoveryData', async (quizId) => {
         //Se une al cliente a la sala:
         socket.join(quizId)
-
         //Se recuperan y se envían los datos a todos los clientes de la sala:
         const playerData = await getPlayersData(quizId, socket)
         const quizData = await getQuizData(quizId, socket)

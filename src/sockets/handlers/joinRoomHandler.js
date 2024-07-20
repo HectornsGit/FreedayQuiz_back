@@ -24,9 +24,10 @@ const joinRoomHandler = (socket, io) => {
             console.log('Jugadores en en la sala:', clientsNumber)
         }
 
-        //Se envían los datos básicos del quiz para que estén disponibles en la pantalla de inicio del quiz (antes incluso de ingresar el nombnre de usuario) en caso de que el master ya esté online:
+        // Se envían los datos básicos del quiz para que estén disponibles en la pantalla de inicio del quiz (antes incluso de ingresar el nombre de usuario) en caso de que el master ya esté online:
         const isMasterOnline = await getMasterState(quizId)
-        if (isMasterOnline) {
+        if (isMasterOnline?.state) {
+            //El master sólo entrará aquí si el servidor se cae (No cuando el cliente se desconecte del servidor), momento en que desde el front se envía un aviso al reconectar, para que se reactive el tiempo de la sesión
             const updatedData = await getQuizData(quizId, socket)
             const DataToSend = {
                 title: updatedData?.title,
@@ -38,11 +39,16 @@ const joinRoomHandler = (socket, io) => {
             }
         }
 
-        //En caso de reconexión dentro del tiempo especificado, se recuperan los datos: socket.id, socket.rooms y socket.data.
+        // En caso de reconexión dentro del tiempo especificado, se recuperan los datos: socket.id, socket.rooms y socket.data.
+        const isMaster = socket.data.isMaster
         if (socket.recovered) {
-            console.log('Reconexión exitosa', socket.id)
+            isMaster
+                ? console.log('Master reconectado', socket.id)
+                : console.log('Jugador reconectado', socket.id)
         } else {
-            console.log('Nuevo cliente conectado', socket.id)
+            isMaster
+                ? console.log('Master conectado', socket.id)
+                : console.log('Nuevo jugador conectado', socket.id)
         }
     })
 }

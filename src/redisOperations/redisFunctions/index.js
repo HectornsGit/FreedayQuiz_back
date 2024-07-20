@@ -18,6 +18,8 @@ import clickedResponses from './clickedResponses.js'
 import { getClickedResponses } from './getClickedResponses.js'
 import { masterState } from './masterState.js'
 import { getMasterState } from './getMasterState.js'
+import executedQuestions from './executedQuestions.js'
+import getExecutedQuestions from './getExecutedQuestions.js'
 
 export {
     storeQuizDataInRedis,
@@ -30,6 +32,7 @@ export {
     getClickedResponses,
     getQuestionByQuestionNumber,
     getAllQuestions,
+    getExecutedQuestions,
     updatePlayerData,
     updateQuizData,
     updateQuestionData,
@@ -40,4 +43,5 @@ export {
     setOnlineState,
     masterState,
     clickedResponses,
+    executedQuestions,
 }

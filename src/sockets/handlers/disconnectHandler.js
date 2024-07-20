@@ -1,4 +1,7 @@
-import { setOnlineState } from '../../redisOperations/redisFunctions/index.js'
+import {
+    masterState,
+    setOnlineState,
+} from '../../redisOperations/redisFunctions/index.js'
 
 const disconnectHandler = (socket, io) => {
     socket.on('disconnect', async () => {
@@ -24,8 +27,14 @@ const disconnectHandler = (socket, io) => {
                     state
                 )
             }
+            const master = socket.data?.isMaster
+            if (master) {
+                await masterState(socket.data.quizId, { state: false }, socket)
+                console.log('Master desconectado:', socket.id)
+            } else {
+                console.log('Jugador desconectado', socket.id)
+            }
 
-            console.log('Client disconnected', socket.id)
             console.log('Usuarios restantes en la sala:', clientsNumber)
         }
     })

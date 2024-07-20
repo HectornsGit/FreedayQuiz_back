@@ -1,6 +1,7 @@
 import {
     conditionalStates,
     getQuestionState,
+    executedQuestions,
 } from '../../redisOperations/redisFunctions/index.js'
 const startQuestionHandler = (socket, io) => {
     socket.on('startQuestion', async (quizId, states) => {
@@ -10,9 +11,13 @@ const startQuestionHandler = (socket, io) => {
         //Guardo los estados condicionales para su recuperación en caso de reconexión con el servidor:
         await conditionalStates(quizId, states)
 
-        //Traigo la pregunta actual del estado en Redis:
+        //Traigo la pregunta actual del estado en Redis, sino, traigo la seleccionada:
         const currentQuestion = await getQuestionState(quizId, socket)
         let timeLeft = currentQuestion.questionTime
+
+        //Guardo el número en la lista de preguntas ya ejecutadas:
+        const questionExecuted = currentQuestion.questionNumber
+        await executedQuestions(quizId, questionExecuted, socket)
 
         //Emito el timer y el fin del tiempo:
         const timerInterval = setInterval(async () => {

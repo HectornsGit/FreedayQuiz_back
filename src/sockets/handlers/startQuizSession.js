@@ -22,7 +22,7 @@ const startQuizSession = (socket, io) => {
             clearInterval(timeLeft)
         }, timeInMiliseconds)
 
-        //Aquí guardo los intervalos para cerrarlos desde el evento de abajo:
+        //Aquí guardo las referencias de los intervalos para cerrarlos desde el evento de abajo:
         quizTimers[quizId] = { timer, timeLeft }
     })
 

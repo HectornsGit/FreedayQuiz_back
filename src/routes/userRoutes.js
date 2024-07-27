@@ -8,7 +8,10 @@ import {
 } from '../controllers/users/index.js'
 import { validateAuth } from '../middlewares/index.js'
 import { storage, limits, fileFilter } from '../utils/index.js'
-import { resetPassController } from '../controllers/pass/index.js'
+import {
+    resetPassController,
+    sendRestoredPass,
+} from '../controllers/pass/index.js'
 
 const router = express.Router()
 
@@ -24,8 +27,8 @@ router.post('/login', login)
 router.get('/user-info', validateAuth, getUserByIdController)
 
 //Rutas para recuperar la contraseña:
-router.post('/resetPass', resetPassController)
-// router.get("/checkPass/:token", checkPass);
+router.post('/request-password-reset', resetPassController)
+router.post('/reset-password', sendRestoredPass)
 // router.post("/deleteToken", deleteTokenController);
 
 router.patch(

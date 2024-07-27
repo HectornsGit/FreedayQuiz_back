@@ -1,8 +1,7 @@
 const generateError = (msg, httpStatus) => {
-  const error = new Error(msg);
-  error.httpStatus = httpStatus || 500;
+    const error = new Error(msg)
+    error.httpStatus = httpStatus || 500
+    throw error
+}
 
-  throw error;
-};
-
-export default generateError;
+export default generateError

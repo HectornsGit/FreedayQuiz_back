@@ -29,7 +29,6 @@ router.get('/user-info', validateAuth, getUserByIdController)
 //Rutas para recuperar la contraseña:
 router.post('/request-password-reset', resetPassController)
 router.post('/reset-password', sendRestoredPass)
-// router.post("/deleteToken", deleteTokenController);
 
 router.patch(
     '/edit-user',

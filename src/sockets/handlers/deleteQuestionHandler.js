@@ -7,6 +7,7 @@ const deleteQuestionHandler = (socket) => {
             await deleteQuestion(quizId, questionNumber, socket)
             socket.emit('questionDeleted', {
                 message: `Pregunta ${questionNumber} eliminada correctamente`,
+                questionNumber: questionNumber,
             })
         } catch (error) {
             handleSocketErrors(error, socket)

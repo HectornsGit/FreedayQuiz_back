@@ -10,6 +10,7 @@ import generateCode from './generateCode.js'
 import handleSocketErrors from './handleSocketErrors.js'
 import calculatePoints from './calculatePoints.js'
 import endQuizUtil from './endQuizUtil.js'
+import sendMailUtil from './sendMailUtil.js'
 
 export {
     generateError,
@@ -24,4 +25,5 @@ export {
     handleSocketErrors,
     calculatePoints,
     endQuizUtil,
+    sendMailUtil,
 }

@@ -10,6 +10,9 @@ const validationSchemaLogin = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().min(6).required(),
 })
+const validationSchemaResetPassword = Joi.object({
+    password: Joi.string().min(6).required(),
+})
 const validationSchemaQuiz = Joi.object({
     title: Joi.string().max(40).required(),
     description: Joi.string().min(6).max(200).required(),
@@ -30,4 +33,5 @@ export {
     validationSchemaLogin,
     validationSchemaQuiz,
     validationSchemaQuestions,
+    validationSchemaResetPassword,
 }

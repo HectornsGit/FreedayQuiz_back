@@ -3,14 +3,25 @@ import { updatePassword } from '../../models/users/index.js'
 import { generateError } from '../../utils/index.js'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
+import { validationSchemaResetPassword } from '../../utils/index.js'
 
 const sendRestoredPass = async (req, res, next) => {
     try {
         const { token, newPassword } = req.body
 
+        const { error } = validationSchemaResetPassword.validate({
+            password: newPassword,
+        })
+
+        if (error) {
+            error.message = error.details[0].message
+            generateError(error.message)
+        }
+
         if (!token) {
             generateError('El token no ha sido proporcionado', 400)
         }
+
         //Compruebo que el token se ha hecho con la clave secreta:
         let tokenPayload
         try {

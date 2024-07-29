@@ -4,6 +4,7 @@ import {
     validationSchemaLogin,
     validationSchemaQuiz,
     validationSchemaQuestions,
+    validationSchemaResetPassword,
 } from './joiValidation.js'
 import { storage, limits, fileFilter } from './multerConfig.js'
 import generateCode from './generateCode.js'
@@ -18,6 +19,7 @@ export {
     validationSchemaLogin,
     validationSchemaQuiz,
     validationSchemaQuestions,
+    validationSchemaResetPassword,
     storage,
     limits,
     fileFilter,

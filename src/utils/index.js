@@ -6,12 +6,13 @@ import {
     validationSchemaQuestions,
     validationSchemaResetPassword,
 } from './joiValidation.js'
-import { storage, limits, fileFilter } from './multerConfig.js'
+import { storage, bufferStorage, limits, fileFilter } from './multerConfig.js'
 import generateCode from './generateCode.js'
 import handleSocketErrors from './handleSocketErrors.js'
 import calculatePoints from './calculatePoints.js'
 import endQuizUtil from './endQuizUtil.js'
 import sendMailUtil from './sendMailUtil.js'
+import resizeImages from './resizeImages.js'
 
 export {
     generateError,
@@ -21,6 +22,7 @@ export {
     validationSchemaQuestions,
     validationSchemaResetPassword,
     storage,
+    bufferStorage,
     limits,
     fileFilter,
     generateCode,
@@ -28,4 +30,5 @@ export {
     calculatePoints,
     endQuizUtil,
     sendMailUtil,
+    resizeImages,
 }

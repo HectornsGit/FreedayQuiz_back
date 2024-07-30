@@ -7,7 +7,7 @@ import {
     editUserController,
 } from '../controllers/users/index.js'
 import { validateAuth } from '../middlewares/index.js'
-import { storage, limits, fileFilter } from '../utils/index.js'
+import { storage, bufferStorage, limits, fileFilter } from '../utils/index.js'
 import {
     resetPassController,
     sendRestoredPass,
@@ -17,8 +17,13 @@ const router = express.Router()
 
 //Módulo para validar y gestionar subida de archivos:
 const upload = multer({ storage: storage, limits, fileFilter })
+const saveInBuffer = multer({
+    storage: bufferStorage,
+    limits,
+    fileFilter,
+})
 // Endpoint para registrar un nuevo usuario
-router.post('/register', upload.single('avatar'), register)
+router.post('/register', saveInBuffer.single('avatar'), register)
 
 // Endpoint para iniciar sesión
 router.post('/login', login)
@@ -33,7 +38,7 @@ router.post('/reset-password', sendRestoredPass)
 router.patch(
     '/edit-user',
     validateAuth,
-    upload.single('avatar'),
+    saveInBuffer.single('avatar'),
     editUserController
 )
 

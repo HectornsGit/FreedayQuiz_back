@@ -38,7 +38,7 @@ router.post('/reset-password', sendRestoredPass)
 router.patch(
     '/edit-user',
     validateAuth,
-    upload.single('avatar'),
+    saveInBuffer.single('avatar'),
     editUserController
 )
 

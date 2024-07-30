@@ -1,30 +1,31 @@
 {
-  "type": "module",
-  "name": "freedayquiz_back",
-  "version": "1.0.0",
-  "description": "API to make quiz games online developed in NodeJS",
-  "main": "index.js",
-  "scripts": {
-    "dev": "node --watch ./src/server.js",
-    "initDb": "node ./src/db/initDb.js",
-    "dropDb": "node ./src/db/dropDb.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "bcrypt": "^5.1.1",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "express-rate-limit": "^7.3.1",
-    "joi": "^17.13.1",
-    "jsonwebtoken": "^9.0.2",
-    "multer": "^1.4.5-lts.1",
-    "mysql2": "^3.10.0",
-    "nodemailer": "^6.9.14",
-    "qrcode": "^1.5.3",
-    "redis": "^4.6.14",
-    "socket.io": "^4.7.5"
-  }
+    "type": "module",
+    "name": "freedayquiz_back",
+    "version": "1.0.0",
+    "description": "API to make quiz games online developed in NodeJS",
+    "main": "server.js",
+    "scripts": {
+        "dev": "node --watch ./src/server.js",
+        "initDb": "node ./src/db/initDb.js",
+        "dropDb": "node ./src/db/dropDb.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "bcrypt": "^5.1.1",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.5",
+        "express": "^4.19.2",
+        "express-rate-limit": "^7.3.1",
+        "joi": "^17.13.1",
+        "jsonwebtoken": "^9.0.2",
+        "multer": "^1.4.5-lts.1",
+        "mysql2": "^3.10.0",
+        "nodemailer": "^6.9.14",
+        "qrcode": "^1.5.3",
+        "redis": "^4.6.14",
+        "sharp": "^0.33.4",
+        "socket.io": "^4.7.5"
+    }
 }

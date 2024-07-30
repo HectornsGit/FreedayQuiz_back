@@ -6,7 +6,10 @@ const resizeImages = async (file, width, height) => {
         const outputFilename = `resized-${file.originalname}`
         const outputPath = path.join('./src/uploads/', outputFilename)
         await sharp(file.buffer)
-            .resize(width, height, { fit: 'cover', kernel: sharp.kernel.cubic })
+            .resize(width, height, {
+                fit: 'contain',
+                kernel: sharp.kernel.cubic,
+            })
             .jpeg({ quality: 85 })
             .toFile(outputPath)
         return outputFilename

@@ -16,6 +16,7 @@ import {
     startQuizSession,
     deleteQuestionHandler,
     sendResult,
+    requestSetWinnerOn,
 } from './handlers/index.js'
 
 export default (io) => {
@@ -52,6 +53,9 @@ export default (io) => {
 
         //Se envía el evento para activar las puntuaciones en todos los clientes de la sala:
         showScoresHandler(socket, io)
+
+        //Activar ganador
+        requestSetWinnerOn(socket, io)
 
         //Para enviar el número de respuestas a cada botón:
         sendResult(socket, io)

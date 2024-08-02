@@ -3,6 +3,9 @@ import {
     getQuestionState,
     executedQuestions,
 } from '../../redisOperations/redisFunctions/index.js'
+
+const questionTimer = {}
+
 const startQuestionHandler = (socket, io) => {
     socket.on('startQuestion', async (quizId, states) => {
         //Emito un evento para setear el estado isQuestionRunning:
@@ -38,6 +41,16 @@ const startQuestionHandler = (socket, io) => {
                 io.to(quizId).emit('timeUp')
             }
         }, 1000)
+        //Aquí guardo la referencia del intervalo de la pregunta en curso:
+        questionTimer[quizId] = { timerInterval }
+    })
+
+    socket.on('closeQuestionInterval', (quizId) => {
+        if (questionTimer[quizId]) {
+            clearInterval(questionTimer[quizId].timerInterval)
+            delete questionTimer[quizId]
+            console.log('Intervalo de la pregunta finalizado')
+        }
     })
 }
 export default startQuestionHandler

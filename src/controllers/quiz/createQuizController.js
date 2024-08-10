@@ -1,6 +1,6 @@
 import { createQuiz } from '../../models/quiz/index.js'
 import { validationSchemaQuiz } from '../../utils/index.js'
-import qr from 'qrcode'
+// import qr from 'qrcode'
 import { generateCode } from '../../utils/index.js'
 
 const createQuizController = async (req, res, next) => {
@@ -25,11 +25,11 @@ const createQuizController = async (req, res, next) => {
             loggedUserId,
             accessCode
         )
-        console.log('id', insertId[0].id)
+
         //Creación de código QR:
-        const quizURL = await qr.toDataURL(
-            `${process.env.FRONT_URL}/quiz/${insertId[0].id}`
-        )
+        // const quizURL = await qr.toDataURL(
+        //     `${process.env.FRONT_URL}/quiz/${insertId[0].id}`
+        // )
 
         res.send({
             status: 'ok',
@@ -40,10 +40,10 @@ const createQuizController = async (req, res, next) => {
                 description,
                 accessCode,
                 ownerId: loggedUserId,
-                qrCode: {
-                    quizId: insertId[0].id,
-                    url: quizURL,
-                },
+                // qrCode: {
+                //     quizId: insertId[0].id,
+                //     url: quizURL,
+                // },
             },
         })
     } catch (error) {

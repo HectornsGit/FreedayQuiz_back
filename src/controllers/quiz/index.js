@@ -7,6 +7,7 @@ import getQuizIdByAccessCodeController from './getQuizIdByAccessCodeController.j
 import deleteQuizController from './deleteQuizController.js'
 import deleteQuestionController from './deleteQuestionController.js'
 import createQR from './createQR.js'
+import createCSV from './createCSV.js'
 export {
     createQuizController,
     deleteQuizController,
@@ -17,4 +18,5 @@ export {
     updateQuestionController,
     getQuizIdByAccessCodeController,
     createQR,
+    createCSV,
 }

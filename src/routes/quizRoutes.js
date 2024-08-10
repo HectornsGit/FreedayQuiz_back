@@ -11,6 +11,7 @@ import {
     deleteQuizController,
     deleteQuestionController,
     createQR,
+    createCSV,
 } from '../controllers/quiz/index.js'
 import multer from 'multer'
 import {
@@ -67,3 +68,6 @@ routes.delete('/delete-question', validateAuth, deleteQuestionController)
 
 //Generar QR:
 routes.get('/generate-qr/:quizId', validateAuth, createQR)
+
+//Generar archivo CSV:
+routes.post('/generate-csv', createCSV)

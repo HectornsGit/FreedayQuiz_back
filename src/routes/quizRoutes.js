@@ -10,6 +10,7 @@ import {
     getQuizIdByAccessCodeController,
     deleteQuizController,
     deleteQuestionController,
+    createQR,
 } from '../controllers/quiz/index.js'
 import multer from 'multer'
 import {
@@ -63,3 +64,6 @@ routes.delete('/delete-quiz/:id', validateAuth, deleteQuizController)
 
 //Borrar pregunta:
 routes.delete('/delete-question', validateAuth, deleteQuestionController)
+
+//Generar QR:
+routes.get('/generate-qr/:quizId', validateAuth, createQR)

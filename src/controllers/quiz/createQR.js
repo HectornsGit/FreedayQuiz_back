@@ -9,7 +9,7 @@ const createQR = async (req, res, next) => {
         }
         //Creación de código QR:
         const quizURL = await qr.toDataURL(
-            `${process.env.FRONT_URL}/quiz/${quizId}`
+            `${process.env.FRONT_URL}/match/${quizId}`
         )
         res.send({
             status: 'ok',

@@ -43,13 +43,12 @@ const updateQuestionController = async (req, res, next) => {
             try {
                 // Si la imagen actual es diferente a la predeterminada, se elimina la anterior:
                 if (
-                    newImagePath &&
-                    newImagePath !== oldImagePath &&
-                    oldImagePath != 'imagenPredeterminadaQuestions.png'
+                    image !== 'imagenPredeterminadaQuestions.png' &&
+                    newImagePath !== oldImagePath
                 ) {
-                    image = await resizeImages(req.file, 450, 270)
                     await fs.unlink(oldImagePath)
                 }
+                image = await resizeImages(req.file, 450, 270)
             } catch (error) {
                 console.error(
                     'Error al acceder o eliminar la imagen actual:',

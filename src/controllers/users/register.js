@@ -9,7 +9,7 @@ const register = async (req, res, next) => {
         console.log('nombre de la foto', req.file)
         // Lógica para tratar las imágenes:
         let avatar = req.file
-        if (!avatar) {
+        if (!req.file) {
             avatar = 'imagenPredeterminada.png'
         } else {
             avatar = await resizeImages(req.file, 150, 150)

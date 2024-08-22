@@ -16,26 +16,23 @@ const editUserController = async (req, res, next) => {
         }
 
         let { name, email, password, avatar } = userToUpdate
+        const defaultImage = 'imagenPredeterminada.png'
 
-        //Si envías una nueva foto, se borra la anterior de la carpeta uploads:
+        // Si envías una nueva foto, se borra la anterior de la carpeta uploads:
         if (req.file) {
             const oldImagePath = path.join('src', 'uploads', userData[0].avatar)
-            const newImagePath = path.join(
-                'src',
-                'uploads',
-                `resized-${req.file.originalname}`
-            )
+            // const newImagePath = path.join(
+            //     'src',
+            //     'uploads',
+            //     `resized-${req.file.originalname}`
+            // )
 
             try {
                 // Si la imagen actual es diferente a la predeterminada, se elimina la anterior:
-                if (
-                    newImagePath &&
-                    newImagePath !== oldImagePath &&
-                    oldImagePath !== 'imagenPredeterminada.png'
-                ) {
+                if (userData[0].avatar !== defaultImage) {
                     await fs.unlink(oldImagePath)
-                    avatar = await resizeImages(req.file, 150, 150)
                 }
+                avatar = await resizeImages(req.file, 150, 150)
             } catch (error) {
                 console.error(
                     'Error al acceder o eliminar la imagen actual:',

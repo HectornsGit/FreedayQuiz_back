@@ -6,7 +6,7 @@ import { checkEmail, createUser } from '../../models/users/index.js'
 const register = async (req, res, next) => {
     try {
         const { name, email, password } = req.body
-        console.log('nombre de la foto', req.file)
+
         // Lógica para tratar las imágenes:
         let avatar = req.file
         if (!req.file) {

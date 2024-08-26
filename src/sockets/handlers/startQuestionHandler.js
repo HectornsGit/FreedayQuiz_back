@@ -45,12 +45,13 @@ const startQuestionHandler = (socket, io) => {
         questionTimer[quizId] = { timerInterval }
     })
 
-    socket.on('closeQuestionInterval', (quizId) => {
+    socket.on('closeQuestionInterval', (quizId, timeUp = false) => {
         if (questionTimer[quizId]) {
             clearInterval(questionTimer[quizId].timerInterval)
             delete questionTimer[quizId]
             console.log('Intervalo de la pregunta finalizado')
         }
+        if (timeUp) io.to(quizId).emit('timeUp')
     })
 }
 export default startQuestionHandler

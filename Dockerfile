@@ -24,7 +24,7 @@ WORKDIR /usr/src/app
 #  --mount=type=bind,source=package-lock.json,target=package-lock.json \
 #   --mount=type=cache,target=/root/.npm \
 #  npm ci --omit=dev
-COPY /package.json
+COPY /package.json ./
 
 RUN npm i
 

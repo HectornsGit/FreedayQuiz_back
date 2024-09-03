@@ -15,7 +15,7 @@ services:
             - NAME_DB=${NAME_DB}
             - JWT_SECRET=${JWT_SECRET}
             - FRONT_URL=${FRONT_URL}
-            - REDIS_URL=${REDIS_URL}
+            - REDIS_URL=redis://red-crbjjal6l47c73d6kvv0:6379
             - SMTP_HOST=${SMTP_HOST}
             - SMTP_PORT=${SMTP_PORT}
             - SMTP_USER=${SMTP_USER}

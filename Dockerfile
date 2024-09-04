@@ -26,12 +26,11 @@ WORKDIR /usr/src/app
 #  npm ci --omit=dev
 COPY /package.json ./
 
-# Copy the rest of the source files into the image.
-COPY . .
-
 # Install dependencies and initializate database
 RUN npm i
-CMD npm run initDb
+
+# Copy the rest of the source files into the image.
+COPY . .
 
 # Run the application as a non-root user.
 USER node

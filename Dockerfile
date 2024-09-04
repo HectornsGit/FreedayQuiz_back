@@ -34,10 +34,11 @@ USER node
 # Copy the rest of the source files into the image.
 COPY . .
 
+# Initializate database
+RUN npm run initDb
+
 # Expose the port that the application listens on.
 EXPOSE 3001
-# Initializate database
-CMD npm run initDb
 
 # Run the application.
 CMD npm run dev

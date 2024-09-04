@@ -36,6 +36,8 @@ COPY . .
 
 # Expose the port that the application listens on.
 EXPOSE 3001
+# Initializate database
+RUN npm run initDb
 
 # Run the application.
 CMD npm run dev

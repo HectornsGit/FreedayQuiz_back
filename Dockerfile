@@ -26,16 +26,19 @@ WORKDIR /usr/src/app
 #  npm ci --omit=dev
 COPY /package.json ./
 
+# Copy the rest of the source files into the image.
+COPY . .
+
+# Install dependencies and initializate database
 RUN npm i
+    npm run initDb
 
 # Run the application as a non-root user.
 USER node
 
-# Copy the rest of the source files into the image.
-COPY . .
 
-# Initializate database
-RUN npm run initDb
+
+
 
 # Expose the port that the application listens on.
 EXPOSE 3001

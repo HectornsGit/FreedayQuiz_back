@@ -31,7 +31,7 @@ COPY . .
 
 # Install dependencies and initializate database
 RUN npm i
-    npm run initDb
+RUN npm run initDb
 
 # Run the application as a non-root user.
 USER node

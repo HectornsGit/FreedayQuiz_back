@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+    app:
+        image: freedayquiz_back-server:latest
+        ports:
+            - '3001:3001'
+        environment:
+            - NODE_ENV=development
+            - PORT=${PORT}
+            - HOST_DB=${HOST_DB}
+            - PORT_DB=${PORT_DB}
+            - USER_DB=${USER_DB}
+            - PASSWORD_DB=${PASSWORD_DB}
+            - NAME_DB=${NAME_DB}
+            - JWT_SECRET=${JWT_SECRET}
+            - FRONT_URL=${FRONT_URL}
+            - REDIS_URL=redis:6379
+            - SMTP_HOST=${SMTP_HOST}
+            - SMTP_PORT=${SMTP_PORT}
+            - SMTP_USER=${SMTP_USER}
+            - SMTP_PASSWORD=${SMTP_PASSWORD}
+        depends_on:
+            - redis
+            - mysql
+
+    redis:
+        image: 'redis:alpine'
+        ports:
+            - '6379:6379'
+        volumes:
+            - ./redis.conf:/usr/local/etc/redis/redis.conf
+        command: ['redis-server', '/usr/local/etc/redis/redis.conf']
+
+    mysql:
+        image: 'mysql:8.0'
+        environment:
+            MYSQL_ROOT_PASSWORD: ${PASSWORD_DB}
+            MYSQL_DATABASE: ${NAME_DB}
+        ports:
+            - '3306:3306'
+        volumes:
+            - mysql-data:/var/lib/mysql
+
+volumes:
+    mysql-data:

@@ -11,7 +11,6 @@ const storage = multer.diskStorage({
   },
 })
 
-console.log('Multer ', storage)
 //Guardar en buffer:
 const bufferStorage = multer.memoryStorage()
 

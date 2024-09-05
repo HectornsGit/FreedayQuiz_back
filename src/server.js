@@ -41,8 +41,6 @@ const __dirname = process.cwd()
 const ruta = join(__dirname, 'src', 'uploads')
 app.use('/uploads', express.static(ruta))
 
-console.log('SERVER ES: ', __dirname)
-
 // Rutas de usuario
 app.use(userRoutes)
 

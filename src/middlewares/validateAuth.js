@@ -4,7 +4,6 @@ import { generateError } from '../utils/index.js'
 const validateAuth = (req, _res, next) => {
     try {
         const { authorization } = req.headers
-        console.log('auth33', authorization)
 
         if (!authorization) {
             generateError('Se requiere autorización', 401)

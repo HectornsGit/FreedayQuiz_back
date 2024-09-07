@@ -1,9 +1,11 @@
-import { generateError, resizeImages } from '../../utils/index.js'
+import { generateError } from '../../utils/index.js'
 import {
     checkQuestionNumber,
     createQuestions,
 } from '../../models/quiz/index.js'
 import { validationSchemaQuestions } from '../../utils/index.js'
+import { PassThrough } from 'stream'
+import { cloudinary } from '../../utils/index.js'
 
 const createQuestionsController = async (req, res, next) => {
     try {
@@ -24,12 +26,40 @@ const createQuestionsController = async (req, res, next) => {
             error.message = error.details[0].message
             generateError(error.message)
         }
-        let image = req.file
-        if (!image) {
-            image = 'imagenPredeterminadaQuestions.png'
+
+        let image
+
+        if (!req.file) {
+            image = process.env.DEFAULT_IMAGE_QUESTION
         } else {
-            image = await resizeImages(req.file, 450, 270)
+            image = await new Promise((resolve, reject) => {
+                const uploadStream = cloudinary.uploader.upload_stream(
+                    {
+                        folder: 'quiz_questions', // Carpeta en Cloudinary
+                        transformation: {
+                            width: 450,
+                            height: 270,
+                            crop: 'fill',
+                        },
+                    },
+                    (error, result) => {
+                        if (error) {
+                            return reject(
+                                new Error(
+                                    'Error al subir la imagen a Cloudinary'
+                                )
+                            )
+                        }
+                        resolve(result.secure_url)
+                    }
+                )
+
+                const bufferStream = new PassThrough()
+                bufferStream.end(req.file.buffer)
+                bufferStream.pipe(uploadStream)
+            })
         }
+        console.log('Image', image)
         const quizData = { ...req.body, image }
         await createQuestions(quizData)
 

@@ -15,24 +15,24 @@ const app = express()
 //Configuración de Socket.io:
 const server = createServer(app)
 const io = new Server(server, {
-  //Asegurarse que cumplen con las especificaciones de seguridad cors:
-  cors: {
-    origin: process.env.FRONT_URL,
-    methods: ['GET', 'POST'],
-  },
-  //Si el cliente se desconecta, se guardará el id, la sala y los datos:
-  connectionStateRecovery: {
-    maxDisconnectionDuration: 2 * 60 * 1000,
-    skipMiddlewares: true,
-  },
+    //Asegurarse que cumplen con las especificaciones de seguridad cors:
+    cors: {
+        origin: true,
+        methods: ['GET', 'POST'],
+    },
+    //Si el cliente se desconecta, se guardará el id, la sala y los datos:
+    connectionStateRecovery: {
+        maxDisconnectionDuration: 2 * 60 * 1000,
+        skipMiddlewares: true,
+    },
 })
 quizSockets(io)
 
 //Middlewares de aplicación:
 app.use(express.json())
 const corsOptions = {
-  origin: process.env.FRONT_URL,
-  optionsSuccessStatus: 200,
+    origin: process.env.FRONT_URL,
+    optionsSuccessStatus: 200,
 }
 app.use(cors(corsOptions))
 
@@ -53,5 +53,5 @@ app.use(manageErrors)
 
 //Server:
 server.listen(process.env.PORT, () => {
-  console.log(`Servidor activo en el puerto ${process.env.PORT}`)
+    console.log(`Servidor activo en el puerto ${process.env.PORT}`)
 })

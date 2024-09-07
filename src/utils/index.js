@@ -13,6 +13,7 @@ import calculatePoints from './calculatePoints.js'
 import endQuizUtil from './endQuizUtil.js'
 import sendMailUtil from './sendMailUtil.js'
 import resizeImages from './resizeImages.js'
+import cloudinary from './cloudinaryConfig.js'
 
 export {
     generateError,
@@ -31,4 +32,5 @@ export {
     endQuizUtil,
     sendMailUtil,
     resizeImages,
+    cloudinary,
 }

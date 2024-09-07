@@ -1,11 +1,7 @@
-import path from 'path'
-import fs from 'fs/promises'
 import { getQuiz, updateQuestions } from '../../models/quiz/index.js'
-import {
-    generateError,
-    resizeImages,
-    validationSchemaQuestions,
-} from '../../utils/index.js'
+import { generateError, validationSchemaQuestions } from '../../utils/index.js'
+import { PassThrough } from 'stream'
+import { cloudinary } from '../../utils/index.js'
 
 const updateQuestionController = async (req, res, next) => {
     try {
@@ -27,34 +23,42 @@ const updateQuestionController = async (req, res, next) => {
         }
 
         let image = questionToUpdate.image
-        //Si envías una nueva foto, se borra la anterior de la carpeta uploads:
-        if (req.file) {
-            const oldImagePath = path.join(
-                'src',
-                'uploads',
-                questionFromDb.image
-            )
-            const newImagePath = path.join(
-                'src',
-                'uploads',
-                `resized-${req.file.originalname}`
-            )
 
-            try {
-                // Si la imagen actual es diferente a la predeterminada, se elimina la anterior:
-                if (
-                    image !== 'imagenPredeterminadaQuestions.png' &&
-                    newImagePath !== oldImagePath
-                ) {
-                    await fs.unlink(oldImagePath)
-                }
-                image = await resizeImages(req.file, 450, 270)
-            } catch (error) {
-                console.error(
-                    'Error al acceder o eliminar la imagen actual:',
-                    error.message
-                )
+        if (req.file) {
+            const defaultImageUrl = process.env.DEFAULT_IMAGE_QUESTION
+
+            if (image !== defaultImageUrl) {
+                const publicId = image.split('/').pop().split('.')[0]
+                await cloudinary.uploader.destroy(publicId) // Elimina la imagen antigua de Cloudinary
             }
+
+            // Subir la nueva imagen a Cloudinary
+            image = await new Promise((resolve, reject) => {
+                const uploadStream = cloudinary.uploader.upload_stream(
+                    {
+                        folder: 'quiz_questions',
+                        transformation: {
+                            width: 450,
+                            height: 270,
+                            crop: 'fill',
+                        },
+                    },
+                    (error, result) => {
+                        if (error) {
+                            return reject(
+                                new Error(
+                                    'Error al subir la imagen a Cloudinary'
+                                )
+                            )
+                        }
+                        resolve(result.secure_url)
+                    }
+                )
+
+                const bufferStream = new PassThrough()
+                bufferStream.end(req.file.buffer)
+                bufferStream.pipe(uploadStream)
+            })
         }
 
         const {

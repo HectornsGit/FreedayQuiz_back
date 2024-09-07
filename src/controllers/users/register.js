@@ -1,18 +1,46 @@
 import bcrypt from 'bcrypt'
 import { generateError } from '../../utils/index.js'
-import { validationSchemaRegister, resizeImages } from '../../utils/index.js'
+import { validationSchemaRegister } from '../../utils/index.js'
 import { checkEmail, createUser } from '../../models/users/index.js'
+import { PassThrough } from 'stream'
+import { cloudinary } from '../../utils/index.js'
 
 const register = async (req, res, next) => {
     try {
         const { name, email, password } = req.body
 
         // Lógica para tratar las imágenes:
-        let avatar = req.file
+        let avatar
+
         if (!req.file) {
-            avatar = 'imagenPredeterminada.png'
+            avatar = process.env.DEFAULT_IMAGE_USER
         } else {
-            avatar = await resizeImages(req.file, 150, 150)
+            avatar = await new Promise((resolve, reject) => {
+                const uploadStream = cloudinary.uploader.upload_stream(
+                    {
+                        folder: 'users',
+                        transformation: {
+                            width: 150,
+                            height: 150,
+                            crop: 'fill',
+                        },
+                    },
+                    (error, result) => {
+                        if (error) {
+                            return reject(
+                                new Error(
+                                    'Error al subir la imagen a Cloudinary'
+                                )
+                            )
+                        }
+                        resolve(result.secure_url)
+                    }
+                )
+
+                const bufferStream = new PassThrough()
+                bufferStream.end(req.file.buffer)
+                bufferStream.pipe(uploadStream)
+            })
         }
 
         //Validación de los datos con Joi:

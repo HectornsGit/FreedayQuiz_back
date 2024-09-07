@@ -3,7 +3,9 @@ import path from 'path'
 import fs from 'fs/promises'
 import { getUserById } from '../../models/users/index.js'
 import { editUser } from '../../models/users/index.js'
-import { resizeImages, validationSchemaRegister } from '../../utils/index.js'
+import { validationSchemaRegister } from '../../utils/index.js'
+import { PassThrough } from 'stream'
+import { cloudinary } from '../../utils/index.js'
 
 const editUserController = async (req, res, next) => {
     try {
@@ -16,29 +18,42 @@ const editUserController = async (req, res, next) => {
         }
 
         let { name, email, password, avatar } = userToUpdate
-        const defaultImage = 'imagenPredeterminada.png'
 
         // Si envías una nueva foto, se borra la anterior de la carpeta uploads:
         if (req.file) {
-            const oldImagePath = path.join('src', 'uploads', userData[0].avatar)
-            // const newImagePath = path.join(
-            //     'src',
-            //     'uploads',
-            //     `resized-${req.file.originalname}`
-            // )
+            const defaultImageUrl = process.env.DEFAULT_IMAGE_USER
 
-            try {
-                // Si la imagen actual es diferente a la predeterminada, se elimina la anterior:
-                if (userData[0].avatar !== defaultImage) {
-                    await fs.unlink(oldImagePath)
-                }
-                avatar = await resizeImages(req.file, 150, 150)
-            } catch (error) {
-                console.error(
-                    'Error al acceder o eliminar la imagen actual:',
-                    error.message
-                )
+            if (avatar !== defaultImageUrl) {
+                const publicId = avatar.split('/').pop().split('.')[0]
+                await cloudinary.uploader.destroy(publicId)
             }
+
+            avatar = await new Promise((resolve, reject) => {
+                const uploadStream = cloudinary.uploader.upload_stream(
+                    {
+                        folder: 'users',
+                        transformation: {
+                            width: 150,
+                            height: 150,
+                            crop: 'fill',
+                        },
+                    },
+                    (error, result) => {
+                        if (error) {
+                            return reject(
+                                new Error(
+                                    'Error al subir la imagen a Cloudinary'
+                                )
+                            )
+                        }
+                        resolve(result.secure_url)
+                    }
+                )
+
+                const bufferStream = new PassThrough()
+                bufferStream.end(req.file.buffer)
+                bufferStream.pipe(uploadStream)
+            })
         }
 
         //Validación con Joi:

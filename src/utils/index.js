@@ -14,6 +14,7 @@ import endQuizUtil from './endQuizUtil.js'
 import sendMailUtil from './sendMailUtil.js'
 import resizeImages from './resizeImages.js'
 import cloudinary from './cloudinaryConfig.js'
+import generateRandomAvatar from './generateRandomAvatar.js'
 
 export {
     generateError,
@@ -33,4 +34,5 @@ export {
     sendMailUtil,
     resizeImages,
     cloudinary,
+    generateRandomAvatar,
 }

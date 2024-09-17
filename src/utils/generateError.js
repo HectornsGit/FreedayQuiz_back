@@ -1,5 +1,5 @@
 const generateError = (msg, httpStatus) => {
-    const error = new Error(msg)
+    const error = typeof msg === 'string' ? new Error(msg) : msg
     error.httpStatus = httpStatus || 500
     throw error
 }

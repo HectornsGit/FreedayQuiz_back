@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import { generateError } from '../../utils/index.js'
+import { generateError, generateRandomAvatar } from '../../utils/index.js'
 import { validationSchemaRegister } from '../../utils/index.js'
 import { checkEmail, createUser } from '../../models/users/index.js'
 import { PassThrough } from 'stream'
@@ -13,7 +13,8 @@ const register = async (req, res, next) => {
         let avatar
 
         if (!req.file) {
-            avatar = process.env.DEFAULT_IMAGE_USER
+            //Genero una imagen aleatoria:
+            avatar = await generateRandomAvatar(email)
         } else {
             avatar = await new Promise((resolve, reject) => {
                 const uploadStream = cloudinary.uploader.upload_stream(

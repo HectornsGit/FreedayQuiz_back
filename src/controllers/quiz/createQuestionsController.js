@@ -59,7 +59,7 @@ const createQuestionsController = async (req, res, next) => {
                 bufferStream.pipe(uploadStream)
             })
         }
-        console.log('Image', image)
+
         const quizData = { ...req.body, image }
         await createQuestions(quizData)
 

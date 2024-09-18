@@ -57,7 +57,7 @@ const createDb = async () => {
                 quiz_id CHAR(36) NOT NULL,
                 question VARCHAR(60) NOT NULL,
                 question_time INT NOT NULL,
-                optionA VARCHAR(60) NOT NULL,
+                optionA VARCHAR(60),
                 optionB VARCHAR(60),
                 optionC VARCHAR(60),
                 correctAnswer VARCHAR(60),

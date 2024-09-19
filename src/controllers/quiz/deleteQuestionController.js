@@ -10,6 +10,7 @@ const deleteQuestionController = async (req, res, next) => {
             message: `Preguntas con ids ${questionIds.map(
                 (q) => q
             )}  eliminadas correctamente`,
+            questionIds: questionIds,
         })
     } catch (error) {
         console.log('Error al eliminar las preguntas')

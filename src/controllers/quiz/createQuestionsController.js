@@ -61,12 +61,12 @@ const createQuestionsController = async (req, res, next) => {
         }
 
         const quizData = { ...req.body, image }
-        await createQuestions(quizData)
+        const insertId = await createQuestions(quizData)
 
         res.send({
             status: 'ok',
             message: 'Has creado las preguntas para tu quiz!👌',
-            quizData,
+            quizData: { ...quizData, id: insertId },
         })
     } catch (error) {
         next(error)

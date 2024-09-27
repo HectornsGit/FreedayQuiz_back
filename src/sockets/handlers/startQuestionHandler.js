@@ -64,6 +64,7 @@ const startQuestionHandler = (socket, io) => {
             console.log('Intervalo de la pregunta finalizado')
         }
         if (timeUp) io.to(quizId).emit('timeUp')
+        if (timeUp) io.to(quizId).emit('timeUp2')
     })
 }
 export default startQuestionHandler

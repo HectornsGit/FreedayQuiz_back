@@ -1,14 +1,27 @@
 const countDown = (socket, io) => {
-    socket.on('startAutomaticCountDown', (quizId) => {
-        let timeLeft = 6
+    let questionTimer = {}
+    let timeLeft
+    socket.on('startAutomaticCountDown', (quizId, startTime) => {
         const timerInterval = setInterval(async () => {
-            timeLeft -= 1
-            io.to(quizId).emit('countDown', timeLeft)
+            startTime -= 1
+            timeLeft = startTime
+            io.to(quizId).emit('countDown', startTime)
 
-            if (timeLeft <= 0) {
+            if (startTime <= 0) {
                 clearInterval(timerInterval)
             }
         }, 1000)
+        //Referencia del intervalo:
+        questionTimer[quizId] = { timerInterval }
+    })
+
+    socket.on('pauseQuiz', (quizId) => {
+        if (questionTimer[quizId]) {
+            clearInterval(questionTimer[quizId].timerInterval)
+            delete questionTimer[quizId]
+            console.log('Intervalo pausado')
+            io.to(quizId).emit('quizPausedStart', timeLeft)
+        }
     })
 }
 export default countDown

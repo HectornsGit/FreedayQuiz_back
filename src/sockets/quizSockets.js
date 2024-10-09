@@ -18,6 +18,7 @@ import {
     sendResult,
     requestSetWinnerOn,
     countDown,
+    enableButtons,
 } from './handlers/index.js'
 
 export default (io) => {
@@ -62,6 +63,8 @@ export default (io) => {
         sendResult(socket, io)
 
         countDown(socket, io)
+
+        enableButtons(socket, io)
 
         //Se actualizan los datos del quiz en Redis:
         updateQuizDataHandler(socket, io)

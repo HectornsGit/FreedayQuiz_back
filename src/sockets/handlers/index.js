@@ -17,6 +17,7 @@ import deleteQuestionHandler from './deleteQuestionHandler.js'
 import sendResult from './sendResult.js'
 import requestSetWinnerOn from './requestSetWinnerOn.js'
 import countDown from './countDown.js'
+import enableButtons from './enableButtons.js'
 
 export {
     getQuizDataHandler,
@@ -38,4 +39,5 @@ export {
     sendResult,
     requestSetWinnerOn,
     countDown,
+    enableButtons,
 }
